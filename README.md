@@ -2,7 +2,11 @@
 
 Tete is a lightweight learning interface for health-science students to practise a deliberate ECG interpretation cycle: observe, reason, explain, receive guidance, revise, and improve.
 
-This first step contains only the responsive home page and a placeholder practice page. It does not include ECG cases, scoring, AI, uploads, accounts, or progress tracking.
+The application currently includes the responsive home page and one guided normal sinus rhythm practice case. The case uses a purpose-built SVG ECG with fixed, auditable measurements rather than an AI-generated image or patient recording.
+
+Learners can work through rate, rhythm, axis, P waves, PR interval, QRS duration, and ST/T findings; request progressive hints; explain their reasoning; revise answers; and receive deterministic teaching feedback. Free-text explanations are displayed for self-comparison but are not evaluated.
+
+The project does not include ratings, progress tracking, accounts, uploads, or live AI.
 
 ## Requirements
 
@@ -26,6 +30,12 @@ npm run preview
 ```
 
 The production files are generated in `dist/`.
+
+## Case validation
+
+The synthetic trace is generated from fixed parameters in `src/App.jsx`: 75 bpm (800 ms RR), 160 ms PR, 80 ms QRS, an approximately +60° frontal QRS axis, sinus P-wave morphology, and isoelectric ST segments. At 25 mm/s, one small box represents 40 ms. Lead amplitudes are explicitly defined to produce a positive net QRS in I and aVF, a negative aVR, and normal precordial R-wave progression.
+
+Teaching references are linked in the case review, including the AHA/ACCF/HRS ECG standardization statements and NCBI Clinical Methods.
 
 ## Disclaimer
 
