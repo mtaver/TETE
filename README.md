@@ -15,6 +15,14 @@ Learners can filter the library by a target skill such as rate or rhythm. After 
 
 The project does not include accounts, cloud sync, uploads, live AI, or diagnoses beyond these three sinus-rate examples.
 
+## Offline installation
+
+Tete is an installable Progressive Web App. A production build generates a web app manifest and service worker using `vite-plugin-pwa`. After one successful online visit, the application shell and all essential local assets are precached: the home page, case library, schematic ECGs, questions, hints, feedback, offline learning summaries, and progress dashboard.
+
+The app shows when it is offline and when its core content is ready for offline use. When a new version is waiting, Tete offers an explicit update button. The button is disabled during an active attempt so an update cannot interrupt the learner; applying it reloads application code but does not clear `localStorage` progress.
+
+External AHA/ACC/HRS and NCBI reference pages still require an internet connection. Each case therefore includes a short original summary with source attribution that remains available offline. Essential fonts and the app icon are bundled locally; no remote font request is required.
+
 ## Requirements
 
 - Node.js 20 or later
@@ -70,6 +78,10 @@ Rating eligibility is tracked separately by stable case ID. An unseen case can a
 
 The progress panel includes a confirmed reset control. If storage is missing, corrupt, blocked, or full, the case remains usable and shows a warning that progress may not persist.
 
+The dashboard separately shows the current prototype rating, number of independently rated assessments, number of guided or practice attempts, mode-labelled score history, rating history, and skills needing more practice. Guided and repeat-case results remain visually labelled as practice; increases in these scores are not presented as independent improvement.
+
+Progress exists only in this browser on this device. It does not sync, and clearing browser/site data may permanently remove it.
+
 ## Tests
 
 ```bash
@@ -77,7 +89,7 @@ npm test
 npm run build
 ```
 
-The automated tests cover weighted results; guided versus rated attempts; answer exposure; per-case eligibility; duplicate protection; rating bounds; serialization persistence; old-record preservation; corrupt storage; reset behavior; stable IDs; and waveform/rate/interval answer-key consistency for all three cases.
+The automated tests cover weighted results; guided versus rated attempts; answer exposure; per-case eligibility; duplicate protection; rating bounds; serialization persistence; old-record preservation across app versions; corrupt storage; reset behavior; stable IDs; and waveform/rate/interval answer-key consistency for all three cases. Production verification additionally checks generated PWA assets and service-worker-backed offline navigation.
 
 ## Disclaimer
 

@@ -11,9 +11,12 @@
   },
   "dependencies": {
     "@vitejs/plugin-react": "latest",
-    "vite": "latest",
     "react": "latest",
-    "react-dom": "latest"
+    "react-dom": "latest",
+    "vite": "latest",
+    "workbox-window": "^7.4.1"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "vite-plugin-pwa": "^2.0.0"
+  }
 }

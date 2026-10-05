@@ -1,8 +1,8 @@
 export const CASE_SOURCES = {
-  standards: { title: 'AHA/ACCF/HRS: ECG technology and standardization', url: 'https://www.ahajournals.org/doi/10.1161/CIRCULATIONAHA.106.180200', note: 'Recording calibration and interval measurement.' },
-  definitions: { title: 'ACC/AHA/HRS: Electrophysiology definitions', url: 'https://www.ahajournals.org/doi/10.1161/CIRCULATIONAHA.106.180199', note: 'Sinus bradycardia definition and sinus P-wave axis.' },
-  fundamentals: { title: 'Clinical Methods: Electrocardiography', url: 'https://www.ncbi.nlm.nih.gov/books/NBK354/', note: 'P-wave, PR interval, and QRS fundamentals.' },
-  sinusRhythms: { title: 'NCBI Bookshelf: Interpret Basic ECG', url: 'https://www.ncbi.nlm.nih.gov/books/NBK594493/', note: 'Introductory sinus rhythm, bradycardia, and tachycardia teaching.' },
+  standards: { title: 'AHA/ACCF/HRS: ECG technology and standardization', url: 'https://www.ahajournals.org/doi/10.1161/CIRCULATIONAHA.106.180200', note: 'Recording calibration and interval measurement.', summary: 'Standard calibration makes timing and voltage measurements comparable: at 25 mm/s each small horizontal box is 40 ms, while 10 mm vertically represents 1 mV.' },
+  definitions: { title: 'ACC/AHA/HRS: Electrophysiology definitions', url: 'https://www.ahajournals.org/doi/10.1161/CIRCULATIONAHA.106.180199', note: 'Sinus bradycardia definition and sinus P-wave axis.', summary: 'A sinus mechanism has a consistent atrial activation pattern. In adults, sinus bradycardia is conventionally below 60 bpm, but rate always needs clinical context.' },
+  fundamentals: { title: 'Clinical Methods: Electrocardiography', url: 'https://www.ncbi.nlm.nih.gov/books/NBK354/', note: 'P-wave, PR interval, and QRS fundamentals.', summary: 'Measure PR from P onset to QRS onset and QRS from its first to final deflection. A consistent P before every QRS supports an organized atrioventricular relationship.' },
+  sinusRhythms: { title: 'NCBI Bookshelf: Interpret Basic ECG', url: 'https://www.ncbi.nlm.nih.gov/books/NBK594493/', note: 'Introductory sinus rhythm, bradycardia, and tachycardia teaching.', summary: 'Sinus bradycardia, normal sinus rhythm, and sinus tachycardia share an organized sinus P–QRS relationship; their introductory distinction is the adult rate range.' },
 }
 
 export const leadMorphology = {
