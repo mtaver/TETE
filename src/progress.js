@@ -28,7 +28,9 @@ export function recordAttempt(progress, attempt) {
     return { progress, recorded: false, duplicate: true, attempt: progress.attempts.find((item) => item.id === attempt.id) }
   }
 
-  const firstRatedCaseAttempt = attempt.mode === 'rated' && !progress.attempts.some((item) => item.caseId === attempt.caseId && item.rated)
+  // Seeing an answer key in either mode makes every later attempt on that case
+  // practice-only. Existing attempt records remain the source of truth.
+  const firstRatedCaseAttempt = attempt.mode === 'rated' && !progress.attempts.some((item) => item.caseId === attempt.caseId)
   const rating = firstRatedCaseAttempt ? ratingChange(progress.rating, attempt.percentage, attempt.caseId) : { expected: null, actual: attempt.percentage / 100, delta: 0, nextRating: progress.rating, difficulty: SCORING_CONFIG.cases[attempt.caseId].difficulty }
   const storedAttempt = {
     ...attempt,

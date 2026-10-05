@@ -1,3 +1,13 @@
+const introductoryWeights = {
+  rate: 15,
+  rhythm: 20,
+  axis: 10,
+  pWaves: 15,
+  pr: 10,
+  qrs: 15,
+  stt: 15,
+}
+
 export const SCORING_CONFIG = {
   version: 1,
   startingRating: 600,
@@ -7,16 +17,10 @@ export const SCORING_CONFIG = {
   cases: {
     'normal-sinus-rhythm-01': {
       difficulty: 600,
-      weights: {
-        rate: 15,
-        rhythm: 20,
-        axis: 10,
-        pWaves: 15,
-        pr: 10,
-        qrs: 15,
-        stt: 15,
-      },
+      weights: introductoryWeights,
     },
+    'sinus-bradycardia-01': { difficulty: 580, weights: introductoryWeights },
+    'sinus-tachycardia-01': { difficulty: 620, weights: introductoryWeights },
   },
 }
 
