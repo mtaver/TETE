@@ -90,7 +90,6 @@ h2 { font-size: clamp(2.5rem, 5vw, 4.2rem); }
 .figure-note { margin: 0; padding: 14px 22px; color: #667a74; background: #fff; font-size: .82rem; line-height: 1.5; border-top: 1px solid #e1e5e2; }
 .mode-page { padding: 38px 0 80px; }
 .mode-page > .kicker { margin: 0 0 12px; }
-.mode-page > h1 { max-width: 850px; margin: 0; font-size: clamp(2.8rem, 7vw, 5.6rem); }
 .next-step { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 16px 32px; margin: 0 0 60px; padding: clamp(24px, 4vw, 38px); border: 2px solid #8db4a7; border-radius: 18px; background: #edf6f2; }
 .next-step > div { grid-row: span 2; }
 .next-step .kicker { margin: 0 0 8px; }
@@ -105,8 +104,7 @@ h2 { font-size: clamp(2.5rem, 5vw, 4.2rem); }
 .library { padding: 55px 0 80px; border-top: 1px solid #d4ddd8; }
 .library > .back-link { margin-bottom: 44px; }
 .library > .kicker { margin: 0 0 10px; }
-.library h1 { margin: 0; font-size: clamp(3rem, 7vw, 5.5rem); }
-.library-intro { max-width: 650px; color: #60736e; font-size: 1.08rem; line-height: 1.6; }
+.library-intro { max-width: 650px; margin-top: 0; color: #60736e; font-size: 1.08rem; line-height: 1.6; }
 .topic-search, .guided-browser, .assessment-library { margin-top: 42px; padding-top: 42px; border-top: 1px solid #d4ddd8; }
 .topic-search h2, .guided-browser h2, .assessment-library h2 { font-size: clamp(2rem, 4vw, 3.2rem); }
 .topic-search > label { display: block; margin: 24px 0 8px; color: #294a43; font-weight: 700; }

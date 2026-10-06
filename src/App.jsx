@@ -76,10 +76,9 @@ function LearningLibrary({ progress, onSelect }) {
   const hasQuery = Boolean(query.trim())
   const caseById = (id) => CASES.find((item) => item.id === id)
 
-  return <section className="library" aria-labelledby="learning-library-title">
+  return <section className="library" aria-label="Learning Mode case library">
     <a className="back-link" href="#practice"><span aria-hidden="true">←</span> Back to practice modes</a>
     <p className="kicker">Learning Mode</p>
-    <h1 id="learning-library-title">Learn with guidance.</h1>
     <p className="library-intro">Search a topic or choose a case. Hints, revision, explanations, and written-interpretation feedback are available, and your skill rating will not change.</p>
 
     <section className="topic-search" aria-labelledby="topic-search-title">
@@ -112,10 +111,9 @@ function LearningLibrary({ progress, onSelect }) {
 function AssessmentLibrary({ progress, onSelect }) {
   const cases = CASES.map((caseData) => ({ caseData, attempts: progress.attempts.filter((attempt) => attempt.caseId === caseData.id) }))
   const eligibleCount = cases.filter(({ attempts }) => attempts.length === 0).length
-  return <section className="library" aria-labelledby="assessment-library-title">
+  return <section className="library" aria-label="Assessment Mode case library">
     <a className="back-link" href="#practice"><span aria-hidden="true">←</span> Back to practice modes</a>
     <p className="kicker">Assessment Mode</p>
-    <h1 id="assessment-library-title">Interpret independently.</h1>
     <p className="library-intro">Diagnoses and topic clues stay hidden until submission. Only a first attempt on an unseen case can update your prototype skill rating.</p>
     {!eligibleCount && <div className="empty-state" role="status"><h2>No rating-eligible cases remain</h2><p>You have already seen every answer key. You can still take practice assessments, or continue with hints and revision in Learning Mode.</p><a className="secondary-button" href="#learning">Go to Learning Mode</a></div>}
     <div className="case-grid assessment-grid">{cases.map(({ caseData, attempts }) => {
@@ -134,7 +132,7 @@ function NextStep({ recommendation, onContinue }) {
 }
 
 function ModeSelection({ recommendation, onContinue }) {
-  return <section className="mode-page" aria-labelledby="mode-title"><a className="back-link" href="#home"><span aria-hidden="true">←</span> Back to home</a><NextStep recommendation={recommendation} onContinue={onContinue} /><p className="kicker">Choose a mode</p><h1 id="mode-title">How would you like to practise today?</h1><div className="mode-grid"><article><h2>Learning Mode</h2><p>Practise with hints, feedback, and revision.</p><a className="secondary-button mode-button" href="#learning">Choose Learning Mode <span aria-hidden="true">→</span></a></article><article><h2>Assessment Mode</h2><p>Interpret ECGs independently and update your skill rating.</p><a className="primary-button mode-button" href="#assessment">Choose Assessment Mode <span aria-hidden="true">→</span></a></article></div><div className="utility-links"><a href="#progress">View progress</a></div><ScoringDetails /></section>
+  return <section className="mode-page" aria-label="Practice modes"><a className="back-link" href="#home"><span aria-hidden="true">←</span> Back to home</a><NextStep recommendation={recommendation} onContinue={onContinue} /><p className="kicker">Choose a mode</p><div className="mode-grid"><article><h2>Learning Mode</h2><p>Practise with hints, feedback, and revision.</p><a className="secondary-button mode-button" href="#learning">Choose Learning Mode <span aria-hidden="true">→</span></a></article><article><h2>Assessment Mode</h2><a className="primary-button mode-button" href="#assessment">Choose Assessment Mode <span aria-hidden="true">→</span></a></article></div><div className="utility-links"><a href="#progress">View progress</a></div><ScoringDetails /></section>
 }
 
 function Guidance({ caseData, answers }) {
