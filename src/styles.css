@@ -91,6 +91,17 @@ h2 { font-size: clamp(2.5rem, 5vw, 4.2rem); }
 .mode-page { padding: 38px 0 80px; }
 .mode-page > .kicker { margin: 0 0 12px; }
 .mode-page > h1 { max-width: 850px; margin: 0; font-size: clamp(2.8rem, 7vw, 5.6rem); }
+.next-step { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 16px 32px; margin: 0 0 60px; padding: clamp(24px, 4vw, 38px); border: 2px solid #8db4a7; border-radius: 18px; background: #edf6f2; }
+.next-step > div { grid-row: span 2; }
+.next-step .kicker { margin: 0 0 8px; }
+.next-step h2 { font-size: clamp(1.9rem, 4vw, 3rem); }
+.next-step p { max-width: 680px; color: #526761; line-height: 1.6; }
+.next-step > a { color: #145c50; font-weight: 700; text-align: center; text-underline-offset: 4px; }
+.review-label { padding: 9px 12px; border-left: 4px solid #b26b32; background: #fff3e3; color: #754820 !important; font-size: .84rem; font-weight: 750; line-height: 1.45; }
+.focus-instruction { margin: 0 0 28px; padding: 22px 24px; border-left: 5px solid #2b776a; border-radius: 10px; background: #eaf3ef; }
+.focus-instruction .kicker { margin: 0 0 7px; }
+.focus-instruction h2 { font-size: clamp(1.8rem, 4vw, 2.6rem); }
+.focus-instruction p { color: #526761; line-height: 1.55; }
 .library { padding: 55px 0 80px; border-top: 1px solid #d4ddd8; }
 .library > .back-link { margin-bottom: 44px; }
 .library > .kicker { margin: 0 0 10px; }
@@ -153,6 +164,10 @@ h2 { font-size: clamp(2.5rem, 5vw, 4.2rem); }
 .results-summary { max-width: 700px; margin-bottom: 42px; }
 .results-summary > p:not(.kicker) { color: #60736e; font-size: 1.08rem; line-height: 1.6; }
 .rating-result, .practice-result { margin: 24px 0; padding: 18px 20px; border-radius: 10px; background: #e3f1ea; border-left: 4px solid #25825f; }
+.focused-completion { margin: 24px 0; padding: 20px; border: 1px solid #b9cec5; border-radius: 12px; background: #eef6f2; }
+.focused-completion .kicker { margin: 0 0 8px; }
+.focused-completion h3 { margin: 0; color: #103f36; font-size: 1.35rem; }
+.focused-completion p { color: #526761; line-height: 1.55; }
 .guidance { margin: 0 0 30px; padding: 24px; background: #eef4f1; border: 1px solid #cbd8d2; border-radius: 14px; }
 .guidance .kicker { margin: 0 0 8px; }
 .guidance h3 { margin: 0; font-size: 1.4rem; }
@@ -202,6 +217,9 @@ footer { margin-top: auto; border-top: 1px solid #d8ded6; padding: 25px 0 35px; 
   .site-header nav { gap: 14px; }
   .site-header nav a { font-size: .8rem; }
   .cycle, .case-header, .question-grid, .feedback-list, .progress-grid, .mode-grid, .case-grid { grid-template-columns: 1fr; }
+  .next-step { grid-template-columns: 1fr; }
+  .next-step > div { grid-row: auto; }
+  .next-step .primary-button { width: 100%; }
   .section-heading { position: static; }
   .hero { padding-top: 64px; }
   .steps li { grid-template-columns: 42px 1fr; }

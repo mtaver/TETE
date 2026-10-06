@@ -15,6 +15,16 @@ Practice begins with a simple mode-selection page:
 
 The libraries, case screens, mode selector, and progress dashboard have distinct hash routes, so browser Back and Forward follow the learner’s path. The previous `#practice` entry remains the mode-selection route. Detailed rules are collapsed under **How scoring works**, while history and dashboard information live behind **View progress**.
 
+## Continue learning
+
+The mode-selection page includes a prominent **Continue learning** recommendation based only on locally saved structured-answer history. Tete looks for skills marked incorrect in the most recent submitted attempt containing a miss. If that attempt contains several misses, the existing provisional question weight breaks the tie; stable question order is the final deterministic tie-breaker. A recorded `Not sure` response is described explicitly when that response is available.
+
+The selected existing case opens in Learning Mode with a focused instruction while retaining the complete interpretation workflow, hints, written feedback, explanations, and revision. The session is always practice and never changes the skill rating. A revised resubmission reuses the original attempt identifier, so it updates the learner’s review experience without counting another completed session. Previously seen recommendations and library cases are labelled **Review practice—does not change your rating.**
+
+Learners with no history see **Start with the basics**. If history contains no missed skills, Tete offers general systematic practice and does not infer a weakness. A local sourced summary is the fallback when no existing case supports a recommended skill, and learners can always choose another topic instead.
+
+Version-one history is preserved. Older records contain correctness flags but not the original selected answer, so Tete can identify an older recorded miss but cannot truthfully distinguish an incorrect choice from `Not sure`. New attempts store a copy of structured responses alongside the existing correctness data; this does not change scoring, rating, or the storage key.
+
 Learners can filter the library by a target skill such as rate or rhythm. After feedback, Tete recommends a practice area from incorrect or “Not sure” answers and links to a relevant teaching resource. Recommendations are practice guidance, not evidence of mastery.
 
 ## Local topic search
@@ -131,7 +141,7 @@ npm test
 npm run build
 ```
 
-The automated tests cover weighted results; guided versus rated attempts; answer exposure; independent eligibility for original and variant IDs; duplicate protection; rating bounds; serialization persistence; old-record preservation across app versions; corrupt storage; reset behavior; stable IDs; waveform/rate/rhythm/interval answer-key consistency; teaching support; topic names and synonyms; empty and unmatched searches; topic-to-case mappings; mode/library/case route parsing (including the legacy entry); and correct, incomplete, contradictory, negated, uncertain, blank, and unrecognised written interpretations. They also verify that feedback review cannot alter attempts or rating and that feedback flags use separate local storage. Production verification additionally checks generated PWA assets and service-worker-backed offline navigation.
+The automated tests cover weighted results; guided versus rated attempts; answer exposure; independent eligibility for original and variant IDs; duplicate protection; rating bounds; serialization persistence; old-record preservation across app versions; corrupt storage; reset behavior; stable IDs; waveform/rate/rhythm/interval answer-key consistency; teaching support; topic names and synonyms; empty and unmatched searches; topic-to-case mappings; mode/library/focused-case route parsing (including the legacy entry); new-learner and no-miss recommendations; recent-miss selection; weight tie-breaking; review labels; and correct, incomplete, contradictory, negated, uncertain, blank, and unrecognised written interpretations. They also verify that duplicate attempt identifiers cannot add a completion or rating change, feedback review cannot alter attempts or rating, and feedback flags use separate local storage. Production verification additionally checks generated PWA assets and service-worker-backed offline navigation.
 
 Step 6 production UI checks covered a 375 × 812 viewport, single-column reflow, keyboard traversal, visible focus (including the skip link), accessible form names, horizontal keyboard-focusable ECG scrolling, and focus/status announcement after submission. The browser harness did not expose a reliable native 200% zoom control; the narrower mobile reflow passed, but an explicit 200% browser-zoom check remains in the pre-study manual checklist. The local two-build PWA update test passed; it should still be repeated on the intended HTTPS staging deployment because server/CDN cache headers are not represented by Vite preview.
 

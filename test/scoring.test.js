@@ -5,6 +5,7 @@ import { CASES, validateCase } from '../src/cases.js'
 import { TOPICS, searchTopics } from '../src/topics.js'
 import { FEEDBACK_FLAGS_KEY, checkInterpretation, recordFeedbackFlag } from '../src/interpretationFeedback.js'
 import { parseRoute } from '../src/navigation.js'
+import { getLearningRecommendation } from '../src/learningRecommendation.js'
 
 const caseId = 'normal-sinus-rhythm-01'
 const questions = [
@@ -20,9 +21,45 @@ test('navigation separates practice modes and preserves legacy entry links', () 
   assert.deepEqual(parseRoute('#learning', caseIds), { view: 'learning' })
   assert.deepEqual(parseRoute('#assessment', caseIds), { view: 'assessment' })
   assert.deepEqual(parseRoute('#progress', caseIds), { view: 'progress' })
-  assert.deepEqual(parseRoute(`#case/${caseId}/learning`, caseIds), { view: 'case', caseId, mode: 'learning' })
-  assert.deepEqual(parseRoute(`#case/${caseId}/assessment`, caseIds), { view: 'case', caseId, mode: 'assessment' })
+  assert.deepEqual(parseRoute(`#case/${caseId}/learning`, caseIds), { view: 'case', caseId, mode: 'learning', focusSkill: null })
+  assert.deepEqual(parseRoute(`#case/${caseId}/assessment`, caseIds), { view: 'case', caseId, mode: 'assessment', focusSkill: null })
+  assert.deepEqual(parseRoute(`#case/${caseId}/learning/rate`, caseIds), { view: 'case', caseId, mode: 'learning', focusSkill: 'rate' })
   assert.deepEqual(parseRoute('#case/not-a-case/assessment', caseIds), { view: 'home' })
+})
+
+test('continue learning handles new learners and learners without recorded misses', () => {
+  const beginner = getLearningRecommendation(emptyProgress())
+  assert.equal(beginner.kind, 'basics')
+  assert.equal(beginner.caseId, CASES[0].id)
+  const complete = getLearningRecommendation({ rating: 600, attempts: [{ ...attempt(), correctness: Object.fromEntries(CASES[0].questions.map((question) => [question.id, true])) }] })
+  assert.equal(complete.kind, 'general')
+  assert.match(complete.explanation, /rather than inventing a weakness/)
+})
+
+test('continue learning prioritises the most recent miss and weight breaks same-attempt ties', () => {
+  const progress = { rating: 600, attempts: [
+    { ...attempt({ id: 'older', caseId: CASES[0].id }), correctness: { rhythm: false } },
+    { ...attempt({ id: 'newer', caseId: CASES[1].id }), correctness: { axis: false, rate: false }, responses: { rate: 'Not sure' } },
+  ] }
+  const recommendation = getLearningRecommendation(progress)
+  assert.equal(recommendation.skill, 'rate')
+  assert.match(recommendation.explanation, /selected “Not sure”/)
+  assert.ok(CASES.find((item) => item.id === recommendation.caseId).skills.includes('rate'))
+})
+
+test('continue learning marks a recommended seen case as review practice', () => {
+  const allCasesSeen = CASES.map((caseData, index) => ({ ...attempt({ id: `seen-${index}`, caseId: caseData.id }), correctness: index === CASES.length - 1 ? { qrs: false } : {} }))
+  const recommendation = getLearningRecommendation({ rating: 600, attempts: allCasesSeen })
+  assert.equal(recommendation.skill, 'qrs')
+  assert.equal(recommendation.review, true)
+})
+
+test('continue learning falls back to an existing sourced summary when no case matches', () => {
+  const limitedCases = [CASES.find((caseData) => caseData.id === 'sinus-bradycardia-01')]
+  const recommendation = getLearningRecommendation({ rating: 600, attempts: [{ ...attempt({ caseId: limitedCases[0].id }), correctness: { axis: false } }] }, limitedCases)
+  assert.equal(recommendation.kind, 'summary')
+  assert.equal(recommendation.caseId, null)
+  assert.ok(recommendation.source?.summary)
 })
 
 test('weighted scoring handles all-correct, mixed, all-incorrect, and Not sure', () => {
