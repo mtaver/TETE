@@ -4,7 +4,7 @@ Tete is a lightweight learning interface for health-science students to practise
 
 Learner-testing URL: **https://mtaver.github.io/TETE/**. GitHub reports the Pages deployment as successful; network-level access may still depend on the learner’s connection to `github.io`.
 
-The application includes a responsive home page and a small case library with three stable-ID introductory cases: a normal-rate sinus rhythm, sinus bradycardia, and sinus tachycardia. Diagnosis names remain hidden in the library and during interpretation. Each case uses a purpose-built schematic SVG ECG with fixed, auditable measurements rather than an AI-generated image or patient recording.
+The application includes a responsive home page and a small library of six stable-ID introductory cases: two schematic variants each of normal sinus rhythm, sinus bradycardia, and sinus tachycardia. Diagnosis names remain hidden in Unseen Assessment and during interpretation. Each case uses a purpose-built schematic SVG ECG with fixed, auditable measurements rather than an AI-generated image or patient recording.
 
 Learners can work through rate, rhythm, axis, P waves, PR interval, QRS duration, and ST/T findings; request progressive hints; explain their reasoning; revise answers; and receive deterministic teaching feedback. Free-text explanations are displayed for self-comparison but are not evaluated or scored.
 
@@ -17,13 +17,13 @@ Learners can filter the library by a target skill such as rate or rhythm. After 
 
 ## Local topic search
 
-The case library includes a labelled “What would you like to learn?” search over a bundled topic catalogue. It recognizes names and common synonyms for normal sinus rhythm, sinus bradycardia, sinus tachycardia, heart rate, and rhythm. Results contain short sourced explanations and link only to the existing three cases.
+The case library includes a labelled “What would you like to learn?” search over a bundled topic catalogue. It recognizes names and common synonyms for normal sinus rhythm, sinus bradycardia, sinus tachycardia, heart rate, and rhythm. Results contain short sourced explanations and link only to the six bundled cases.
 
 Topic results and the existing skill browser start Guided Practice directly, so hints and revision remain available and the weighted score is shown without changing the prototype rating. Rated cases remain in a separate, diagnosis-neutral **Unseen assessment** section. The first assessment of an unseen stable case ID remains rating-eligible; any case whose answer key was already exposed remains practice-only.
 
 Search is deterministic and local—there is no internet search or AI generation. The catalogue, explanations, and matching logic are part of the application bundle and are cached by the PWA for offline use. External source pages are still labelled as internet-required.
 
-The project does not include accounts, cloud sync, uploads, live AI, or diagnoses beyond these three sinus-rate examples.
+The project does not include accounts, cloud sync, uploads, live AI, or diagnoses beyond these three sinus-rate categories.
 
 ## Learner testing and content review
 
@@ -80,9 +80,9 @@ Deployment status, exact enablement steps, and the uncompleted live verification
 
 ## Case validation
 
-Case content lives in `src/cases.js`. Stable IDs preserve the existing `normal-sinus-rhythm-01` history and add `sinus-bradycardia-01` and `sinus-tachycardia-01`.
+Case content lives in `src/cases.js`. The original stable IDs remain unchanged. The variants use `normal-sinus-rhythm-02`, `sinus-bradycardia-02`, and `sinus-tachycardia-02`, so eligibility and answer exposure are tracked independently without migrating or rewriting existing progress.
 
-The schematic traces are generated from fixed parameters: 75 bpm/800 ms RR, 50 bpm/1200 ms RR, and 120 bpm/500 ms RR. All use a 160 ms PR, 80 ms QRS, approximately +60° frontal QRS axis, sinus P-wave morphology, and isoelectric ST segments. At 25 mm/s, one small box represents 40 ms. Waveform spacing is calculated at 125 pixels/second and is checked against each rate and answer key in automated tests.
+The original traces remain 75 bpm/800 ms RR, 50 bpm/1200 ms RR, and 120 bpm/500 ms RR with 160 ms PR and 80 ms QRS. The new variants are 60 bpm/1000 ms RR with 120 ms PR, 40 bpm/1500 ms RR with 200 ms PR, and 150 bpm/400 ms RR with 120 ms PR; all three variants use a 100 ms QRS. Every case models an approximately +60° frontal QRS axis, sinus P-wave morphology, and isoelectric ST segments. At 25 mm/s, one small box represents 40 ms. Automated validation checks rate, RR and drawn spacing, rhythm classification, PR/QRS answer strings, answer options, hints, explanations, sources, and the **Not yet reviewed** expert-review status.
 
 Teaching references are linked in each review and recommendation, including AHA/ACCF/HRS standardization and electrophysiology definitions plus NCBI Clinical Methods and introductory sinus-rhythm material.
 
@@ -90,7 +90,7 @@ Teaching references are linked in each review and recommendation, including AHA/
 
 Question weights live in `src/scoringConfig.js` and sum to 100: rhythm 20; rate, P waves, QRS duration, and ST/T findings 15 each; axis and PR interval 10 each. The weights emphasize the organizing rhythm diagnosis and repeatable core measurements. They are provisional educational design choices, are not clinically validated, and must not be used as evidence of clinical competence.
 
-The case percentage is the sum of weights for correct structured answers. Incorrect, blank, and “Not sure” answers earn zero for that item. Free-text interpretation is never scored. Configured prototype difficulties are 580 for Case 02, 600 for Case 01, and 620 for Case 03; these are provisional educational settings rather than validated difficulty estimates.
+The case percentage is the sum of weights for correct structured answers. Incorrect, blank, and “Not sure” answers earn zero for that item. Free-text interpretation is never scored. Configured prototype difficulties are 580–630 across the six cases; these are provisional educational settings rather than validated difficulty estimates.
 
 The prototype rating begins at 600 and is bounded from 100 to 1200. For the first submission of an unseen case in Rated Assessment only:
 
@@ -121,7 +121,7 @@ npm test
 npm run build
 ```
 
-The automated tests cover weighted results; guided versus rated attempts; answer exposure; per-case eligibility; duplicate protection; rating bounds; serialization persistence; old-record preservation across app versions; corrupt storage; reset behavior; stable IDs; waveform/rate/interval answer-key consistency; topic names and synonyms; empty and unmatched searches; and topic-to-existing-case mappings. Production verification additionally checks generated PWA assets and service-worker-backed offline navigation.
+The automated tests cover weighted results; guided versus rated attempts; answer exposure; independent eligibility for original and variant IDs; duplicate protection; rating bounds; serialization persistence; old-record preservation across app versions; corrupt storage; reset behavior; stable IDs; waveform/rate/rhythm/interval answer-key consistency; teaching support; topic names and synonyms; empty and unmatched searches; and topic-to-case mappings. Production verification additionally checks generated PWA assets and service-worker-backed offline navigation.
 
 Step 6 production UI checks covered a 375 × 812 viewport, single-column reflow, keyboard traversal, visible focus (including the skip link), accessible form names, horizontal keyboard-focusable ECG scrolling, and focus/status announcement after submission. The browser harness did not expose a reliable native 200% zoom control; the narrower mobile reflow passed, but an explicit 200% browser-zoom check remains in the pre-study manual checklist. The local two-build PWA update test passed; it should still be repeated on the intended HTTPS staging deployment because server/CDN cache headers are not represented by Vite preview.
 

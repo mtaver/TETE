@@ -52,9 +52,11 @@ test('seeing an answer key in Guided Practice protects that case rating', () => 
 test('rating eligibility is independent for each stable case id', () => {
   const first = recordAttempt(emptyProgress(), attempt())
   const secondCase = recordAttempt(first.progress, attempt({ id: 'attempt-2', caseId: 'sinus-bradycardia-01' }))
+  const newVariant = recordAttempt(secondCase.progress, attempt({ id: 'attempt-3', caseId: 'sinus-bradycardia-02' }))
   assert.equal(first.attempt.rated, true)
   assert.equal(secondCase.attempt.rated, true)
-  assert.equal(secondCase.progress.attempts.length, 2)
+  assert.equal(newVariant.attempt.rated, true)
+  assert.equal(newVariant.progress.attempts.length, 3)
 })
 
 test('a decreasing rated attempt remains recorded', () => {
@@ -92,8 +94,10 @@ test('unavailable local storage degrades without blocking scoring', () => {
 })
 
 test('all schematic case parameters agree with their answer keys', () => {
+  assert.equal(CASES.length, 6)
   assert.equal(new Set(CASES.map((item) => item.id)).size, CASES.length)
-  for (const caseData of CASES) assert.deepEqual(validateCase(caseData), { spacingMatchesRate: true, rrMatchesRate: true, answerMatchesRate: true, intervalsMatchAnswers: true, hasAllQuestionIds: true })
+  assert.deepEqual(CASES.slice(0, 3).map((item) => item.id), ['normal-sinus-rhythm-01', 'sinus-bradycardia-01', 'sinus-tachycardia-01'])
+  for (const caseData of CASES) assert.deepEqual(validateCase(caseData), { spacingMatchesRate: true, rrMatchesRate: true, answerMatchesRate: true, intervalsMatchAnswers: true, hasAllQuestionIds: true, rhythmMatchesRate: true, answersAreOptions: true, hasTeachingSupport: true, reviewPending: true })
 })
 
 test('existing version-one progress loads without rewriting attempts', () => {
@@ -124,4 +128,15 @@ test('every topic maps only to existing cases and has offline sourced teaching t
     assert.ok(topic.caseIds.length > 0)
     assert.ok(topic.caseIds.every((id) => caseIds.has(id)))
   }
+  assert.deepEqual(TOPICS.find((topic) => topic.id === 'normal-sinus-rhythm').caseIds, ['normal-sinus-rhythm-01', 'normal-sinus-rhythm-02'])
+  assert.deepEqual(TOPICS.find((topic) => topic.id === 'sinus-bradycardia').caseIds, ['sinus-bradycardia-01', 'sinus-bradycardia-02'])
+  assert.deepEqual(TOPICS.find((topic) => topic.id === 'sinus-tachycardia').caseIds, ['sinus-tachycardia-01', 'sinus-tachycardia-02'])
+})
+
+test('guided exposure protects only the selected new case', () => {
+  const guided = recordAttempt(emptyProgress(), attempt({ mode: 'guided', caseId: 'normal-sinus-rhythm-02' }))
+  const sameCase = recordAttempt(guided.progress, attempt({ id: 'attempt-2', caseId: 'normal-sinus-rhythm-02' }))
+  const otherNewCase = recordAttempt(sameCase.progress, attempt({ id: 'attempt-3', caseId: 'sinus-tachycardia-02' }))
+  assert.equal(sameCase.attempt.rated, false)
+  assert.equal(otherNewCase.attempt.rated, true)
 })

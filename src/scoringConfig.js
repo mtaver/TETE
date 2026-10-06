@@ -21,6 +21,9 @@ export const SCORING_CONFIG = {
     },
     'sinus-bradycardia-01': { difficulty: 580, weights: introductoryWeights },
     'sinus-tachycardia-01': { difficulty: 620, weights: introductoryWeights },
+    'normal-sinus-rhythm-02': { difficulty: 610, weights: introductoryWeights },
+    'sinus-bradycardia-02': { difficulty: 590, weights: introductoryWeights },
+    'sinus-tachycardia-02': { difficulty: 630, weights: introductoryWeights },
   },
 }
 

@@ -29,7 +29,7 @@ No personal access token should be added merely to enable Pages; the one-time re
 Record each item as pass or fail only after checking the live HTTPS origin:
 
 - Home page loads without missing JavaScript, CSS, icon, or manifest assets.
-- Case library, all three cases, schematic ECGs, questions, hints, submission feedback, and progress dashboard work.
+- Case library, all six cases, schematic ECGs, questions, hints, submission feedback, and progress dashboard work.
 - After one online load, disconnect, reload `/TETE/`, open every case, use a hint, submit a practice attempt, and verify progress persists.
 - With progress recorded, deploy a second distinct commit/build. Confirm the update notification appears.
 - Start an attempt while that update is waiting. Confirm the update button is disabled and entered answers are not interrupted.
