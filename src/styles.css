@@ -71,6 +71,19 @@ h2 { font-size: clamp(2.5rem, 5vw, 4.2rem); }
 .history-list li, .skill-list li { display: flex; justify-content: space-between; gap: 15px; padding: 9px 0; border-bottom: 1px solid #cbd8d2; }
 .history-list small, .skill-list span { color: #60736e; }
 .history-note { color: #60736e; font-size: .78rem; line-height: 1.5; }
+.mistake-review { margin: 34px 0 22px; padding-top: 32px; border-top: 1px solid #b9cbc3; }
+.mistake-review > .kicker { margin: 0 0 7px; }
+.mistake-review > h3 { margin: 0 0 22px; color: #103f36; font-family: Georgia, serif; font-size: clamp(1.8rem, 4vw, 2.7rem); }
+.mistake-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; margin: 0; padding: 0; list-style: none; }
+.mistake-card { padding: 22px; border: 1px solid #cbd8d2; border-radius: 12px; background: #fff; }
+.mistake-card p { color: #526761; line-height: 1.55; }
+.mistake-card p strong { color: #294a43; }
+.mistake-meta { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 6px 18px; padding-bottom: 12px; border-bottom: 1px solid #dde5e1; }
+.mistake-meta strong { color: #17352f; }
+.mistake-meta span { color: #60736e; font-size: .8rem; }
+.mistake-card .secondary-button { margin-top: 8px; }
+.no-mistakes { padding: 22px; border: 1px solid #cbd8d2; border-radius: 12px; background: #fff; }
+.no-mistakes p { margin-top: 0; color: #526761; }
 .text-button, .danger-button { border: 0; background: transparent; color: #145c50; padding: 7px 0; font-weight: 700; text-decoration: underline; text-underline-offset: 3px; }
 .danger-text, .danger-button { color: #9a352b; }
 .danger-button { border: 1px solid #9a352b; border-radius: 999px; padding: 10px 16px; text-decoration: none; }
@@ -214,7 +227,7 @@ footer { margin-top: auto; border-top: 1px solid #d8ded6; padding: 25px 0 35px; 
   .site-header { min-height: 74px; }
   .site-header nav { gap: 14px; }
   .site-header nav a { font-size: .8rem; }
-  .cycle, .case-header, .question-grid, .feedback-list, .progress-grid, .mode-grid, .case-grid { grid-template-columns: 1fr; }
+  .cycle, .case-header, .question-grid, .feedback-list, .progress-grid, .mode-grid, .case-grid, .mistake-list { grid-template-columns: 1fr; }
   .next-step { grid-template-columns: 1fr; }
   .next-step > div { grid-row: auto; }
   .next-step .primary-button { width: 100%; }

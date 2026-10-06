@@ -61,3 +61,33 @@ export function focusedInstruction(caseData, skill) {
   const question = caseData?.questions.find((item) => item.id === skill)
   return question ? `Focus first on ${question.label.toLowerCase()}: ${question.hint}` : 'Complete the full interpretation systematically.'
 }
+
+export function getMistakeReview(progress, cases = CASES) {
+  const attempts = Array.isArray(progress?.attempts) ? progress.attempts : []
+  return [...attempts].reverse().flatMap((attempt) => {
+    const caseData = cases.find((item) => item.id === attempt.caseId)
+    if (!caseData) return []
+    return caseData.questions.flatMap((question) => {
+      if (attempt.correctness?.[question.id] !== false) return []
+      const hasStoredResponse = Object.prototype.hasOwnProperty.call(attempt.responses || {}, question.id)
+      const practiceCase = chooseCase(cases, attempts, question.id, attempt.caseId)
+      return [{
+        id: `${attempt.id}-${question.id}`,
+        attemptId: attempt.id,
+        caseId: attempt.caseId,
+        caseLabel: caseData.number,
+        skill: question.id,
+        skillLabel: question.label,
+        createdAt: attempt.createdAt || null,
+        modeLabel: attempt.rated ? 'Assessment Mode · rated' : attempt.mode === 'guided' ? 'Learning Mode' : 'Assessment Mode · practice',
+        selectedAnswer: hasStoredResponse ? attempt.responses[question.id] : null,
+        answerRecorded: hasStoredResponse,
+        correctAnswer: question.answer,
+        explanation: question.explanation,
+        practiceCaseId: practiceCase?.id || null,
+        practiceCaseLabel: practiceCase?.number || null,
+        reviewPractice: Boolean(practiceCase && attempts.some((item) => item.caseId === practiceCase.id)),
+      }]
+    })
+  })
+}

@@ -5,7 +5,7 @@ import { CASES, validateCase } from '../src/cases.js'
 import { TOPICS, searchTopics } from '../src/topics.js'
 import { FEEDBACK_FLAGS_KEY, checkInterpretation, recordFeedbackFlag } from '../src/interpretationFeedback.js'
 import { parseRoute } from '../src/navigation.js'
-import { getLearningRecommendation } from '../src/learningRecommendation.js'
+import { getLearningRecommendation, getMistakeReview } from '../src/learningRecommendation.js'
 
 const caseId = 'normal-sinus-rhythm-01'
 const questions = [
@@ -60,6 +60,36 @@ test('continue learning falls back to an existing sourced summary when no case m
   assert.equal(recommendation.kind, 'summary')
   assert.equal(recommendation.caseId, null)
   assert.ok(recommendation.source?.summary)
+})
+
+test('mistake review lists stored incorrect and Not sure answers newest first', () => {
+  const progress = { rating: 600, attempts: [
+    { ...attempt({ id: 'older', caseId: CASES[0].id }), createdAt: '2026-01-01T00:00:00.000Z', correctness: { rate: false }, responses: { rate: '50 bpm' } },
+    { ...attempt({ id: 'newer', caseId: CASES[1].id, mode: 'guided' }), createdAt: '2026-02-01T00:00:00.000Z', correctness: { rhythm: false }, responses: { rhythm: 'Not sure' } },
+  ] }
+  const before = JSON.stringify(progress)
+  const mistakes = getMistakeReview(progress)
+  assert.deepEqual(mistakes.map((item) => item.attemptId), ['newer', 'older'])
+  assert.equal(mistakes[0].selectedAnswer, 'Not sure')
+  assert.equal(mistakes[0].modeLabel, 'Learning Mode')
+  assert.equal(mistakes[1].selectedAnswer, '50 bpm')
+  assert.ok(mistakes.every((item) => item.correctAnswer && item.explanation && item.practiceCaseId))
+  assert.equal(JSON.stringify(progress), before)
+})
+
+test('mistake review handles older and empty progress without inventing answers', () => {
+  const older = getMistakeReview({ rating: 600, attempts: [{ ...attempt({ caseId: CASES[0].id }), correctness: { axis: false } }] })
+  assert.equal(older.length, 1)
+  assert.equal(older[0].answerRecorded, false)
+  assert.equal(older[0].selectedAnswer, null)
+  assert.deepEqual(getMistakeReview(emptyProgress()), [])
+})
+
+test('mistake practice navigation retains review-only protection when all cases are seen', () => {
+  const attempts = CASES.map((caseData, index) => ({ ...attempt({ id: `mistake-seen-${index}`, caseId: caseData.id, mode: 'guided' }), correctness: index === CASES.length - 1 ? { rate: false } : {} }))
+  const [mistake] = getMistakeReview({ rating: 600, attempts })
+  assert.ok(mistake.practiceCaseId)
+  assert.equal(mistake.reviewPractice, true)
 })
 
 test('weighted scoring handles all-correct, mixed, all-incorrect, and Not sure', () => {
