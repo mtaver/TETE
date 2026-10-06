@@ -5,6 +5,8 @@ body { margin: 0; min-width: 320px; min-height: 100vh; }
 a { color: inherit; }
 button, select, textarea { font: inherit; }
 button { cursor: pointer; }
+.skip-link { position: fixed; z-index: 10; top: 8px; left: 8px; padding: 10px 14px; border-radius: 8px; background: #fff; color: #103f36; font-weight: 700; transform: translateY(-150%); }
+.skip-link:focus { transform: translateY(0); }
 .site-shell { min-height: 100vh; display: flex; flex-direction: column; }
 .site-header, main, footer { width: min(1120px, calc(100% - 40px)); margin-inline: auto; }
 .site-header { min-height: 84px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #d8ded6; }
@@ -30,6 +32,7 @@ h2 { font-size: clamp(2.5rem, 5vw, 4.2rem); }
 .secondary-button { border: 1px solid #145c50; color: #145c50; background: transparent; }
 .secondary-button:hover { background: #e9f1ed; }
 :where(a, button, select, textarea):focus-visible { outline: 3px solid #d57838; outline-offset: 3px; }
+:where(#main-content, h2)[tabindex="-1"]:focus { outline: none; }
 .cycle { border-top: 1px solid #d8ded6; padding: 80px 0 100px; display: grid; grid-template-columns: .8fr 1.2fr; gap: clamp(48px, 8vw, 110px); }
 .section-heading { position: sticky; top: 30px; align-self: start; }
 .section-heading .kicker { margin: 0 0 14px; }
@@ -156,6 +159,7 @@ h2 { font-size: clamp(2.5rem, 5vw, 4.2rem); }
 .scoring-details th, .scoring-details td { padding: 12px; text-align: left; border-bottom: 1px solid #d4ddd8; vertical-align: top; }
 .scoring-details th { color: #294a43; }
 footer { margin-top: auto; border-top: 1px solid #d8ded6; padding: 25px 0 35px; color: #526761; font-size: .85rem; }
+.app-version { white-space: nowrap; }
 @media (max-width: 760px) {
   .site-header, main, footer { width: min(100% - 28px, 1120px); }
   .pwa-status { width: min(100% - 28px, 1120px); }

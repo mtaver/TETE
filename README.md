@@ -15,11 +15,23 @@ Learners can filter the library by a target skill such as rate or rhythm. After 
 
 The project does not include accounts, cloud sync, uploads, live AI, or diagnoses beyond these three sinus-rate examples.
 
+## Learner testing and content review
+
+Step 6 adds three review artifacts without inventing expert or learner results:
+
+- [`docs/CONTENT_REVIEW.md`](docs/CONTENT_REVIEW.md) audits each waveform, answer key, hint, explanation, and source. Automated consistency is distinguished from expert judgment; every case remains **Not yet reviewed** by an expert.
+- [`docs/LEARNER_TEST_PLAN.md`](docs/LEARNER_TEST_PLAN.md) is a formative protocol for 3–5 health-science students, with de-identified observation fields for completion, confusion, and feedback.
+- [`docs/DEMO_SCRIPT.md`](docs/DEMO_SCRIPT.md) connects the prototype to engagement, resource discovery, and targeted practice guidance while stating its limitations.
+
+The result view now moves keyboard focus to the score heading and exposes the score summary as a polite, atomic status region. A keyboard-visible skip link was added. Existing fieldset/legend and explicit label relationships remain in place for all structured questions and free text.
+
 ## Offline installation
 
 Tete is an installable Progressive Web App. A production build generates a web app manifest and service worker using `vite-plugin-pwa`. After one successful online visit, the application shell and all essential local assets are precached: the home page, case library, schematic ECGs, questions, hints, feedback, offline learning summaries, and progress dashboard.
 
 The app shows when it is offline and when its core content is ready for offline use. When a new version is waiting, Tete offers an explicit update button. The button is disabled during an active attempt so an update cannot interrupt the learner; applying it reloads application code but does not clear `localStorage` progress.
+
+For a reproducible same-origin, two-build update check and the Step 6 execution record, see [`docs/PWA_UPDATE_TEST.md`](docs/PWA_UPDATE_TEST.md). Set `VITE_APP_VERSION` before a production build to give test builds distinct visible footer labels and bundle hashes; normal builds use `Build local`.
 
 External AHA/ACC/HRS and NCBI reference pages still require an internet connection. Each case therefore includes a short original summary with source attribution that remains available offline. Essential fonts and the app icon are bundled locally; no remote font request is required.
 
@@ -90,6 +102,8 @@ npm run build
 ```
 
 The automated tests cover weighted results; guided versus rated attempts; answer exposure; per-case eligibility; duplicate protection; rating bounds; serialization persistence; old-record preservation across app versions; corrupt storage; reset behavior; stable IDs; and waveform/rate/interval answer-key consistency for all three cases. Production verification additionally checks generated PWA assets and service-worker-backed offline navigation.
+
+Step 6 production UI checks covered a 375 × 812 viewport, single-column reflow, keyboard traversal, visible focus (including the skip link), accessible form names, horizontal keyboard-focusable ECG scrolling, and focus/status announcement after submission. The browser harness did not expose a reliable native 200% zoom control; the narrower mobile reflow passed, but an explicit 200% browser-zoom check remains in the pre-study manual checklist. The local two-build PWA update test passed; it should still be repeated on the intended HTTPS staging deployment because server/CDN cache headers are not represented by Vite preview.
 
 ## Disclaimer
 
