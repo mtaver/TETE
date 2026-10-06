@@ -25,6 +25,14 @@ Search is deterministic and local—there is no internet search or AI generation
 
 The project does not include accounts, cloud sync, uploads, live AI, or diagnoses beyond these three sinus-rate categories.
 
+## Written interpretation feedback
+
+After a case is submitted, Tete shows an **About your interpretation** section labelled **Automated practice feedback—may miss or misunderstand wording.** A small local checker compares clearly stated rate, rhythm, axis, P-wave, PR, QRS, and ST/T statements with that case’s answer key. It can identify supported findings, omitted reasoning steps, a limited set of explicit contradictions, negated expected findings, and uncertainty phrases such as “maybe” or “not sure.”
+
+The checker is deterministic and bundled with the app. It does not use live AI, send the interpretation to an API, or run before submission. Wording it cannot interpret reliably is left unclassified and accompanied by a self-review checklist rather than guessed. Learners receive a case-specific example interpretation and can revise their text and review it again without creating another attempt or changing their score or rating.
+
+The checker does not understand unrestricted clinical language, implied meaning, spelling variants, every form of negation, or complex sentence structure. Its feedback is educational support, not an assessment of clinical reasoning. The **This feedback seems incorrect** control stores the flagged wording and checker categories under a separate local browser key; it sends no data and does not modify progress.
+
 ## Learner testing and content review
 
 Step 6 adds three review artifacts without inventing expert or learner results:
@@ -121,7 +129,7 @@ npm test
 npm run build
 ```
 
-The automated tests cover weighted results; guided versus rated attempts; answer exposure; independent eligibility for original and variant IDs; duplicate protection; rating bounds; serialization persistence; old-record preservation across app versions; corrupt storage; reset behavior; stable IDs; waveform/rate/rhythm/interval answer-key consistency; teaching support; topic names and synonyms; empty and unmatched searches; and topic-to-case mappings. Production verification additionally checks generated PWA assets and service-worker-backed offline navigation.
+The automated tests cover weighted results; guided versus rated attempts; answer exposure; independent eligibility for original and variant IDs; duplicate protection; rating bounds; serialization persistence; old-record preservation across app versions; corrupt storage; reset behavior; stable IDs; waveform/rate/rhythm/interval answer-key consistency; teaching support; topic names and synonyms; empty and unmatched searches; topic-to-case mappings; and correct, incomplete, contradictory, negated, uncertain, blank, and unrecognised written interpretations. They also verify that feedback review cannot alter attempts or rating and that feedback flags use separate local storage. Production verification additionally checks generated PWA assets and service-worker-backed offline navigation.
 
 Step 6 production UI checks covered a 375 × 812 viewport, single-column reflow, keyboard traversal, visible focus (including the skip link), accessible form names, horizontal keyboard-focusable ECG scrolling, and focus/status announcement after submission. The browser harness did not expose a reliable native 200% zoom control; the narrower mobile reflow passed, but an explicit 200% browser-zoom check remains in the pre-study manual checklist. The local two-build PWA update test passed; it should still be repeated on the intended HTTPS staging deployment because server/CDN cache headers are not represented by Vite preview.
 

@@ -163,6 +163,15 @@ h2 { font-size: clamp(2.5rem, 5vw, 4.2rem); }
 .reasoning-review, .sources { margin-top: 22px; padding: 26px; border-radius: 12px; background: #eaf1ed; }
 .reasoning-review p { white-space: pre-wrap; line-height: 1.6; }
 .reasoning-review .notice, .sources > p { color: #60736e; font-size: .85rem; }
+.interpretation-feedback h4 { margin-bottom: 6px; }
+.interpretation-feedback ul { margin-top: 6px; line-height: 1.55; }
+.interpretation-feedback details { margin: 18px 0; }
+.interpretation-feedback summary { cursor: pointer; font-weight: 750; }
+.interpretation-feedback label { display: flex; flex-direction: column; gap: 5px; margin: 18px 0 10px; }
+.interpretation-feedback label span { color: #60736e; font-size: .88rem; }
+.interpretation-feedback textarea { width: 100%; resize: vertical; border: 1px solid #9eaea8; border-radius: 9px; padding: 14px; color: #17352f; background: #fff; }
+.interpretation-feedback button:disabled { cursor: not-allowed; opacity: .7; }
+.example-interpretation { padding: 16px; border-left: 4px solid #2b776a; background: #fff; }
 .sources { background: #fff; border: 1px solid #d4ddd8; }
 .sources li { margin: 12px 0; color: #526761; line-height: 1.55; }
 .sources li p { margin: 0 0 5px; }

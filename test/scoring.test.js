@@ -3,6 +3,7 @@ import assert from 'node:assert/strict'
 import { emptyProgress, loadProgress, ratingChange, recordAttempt, resetProgress, saveProgress, scoreAnswers } from '../src/progress.js'
 import { CASES, validateCase } from '../src/cases.js'
 import { TOPICS, searchTopics } from '../src/topics.js'
+import { FEEDBACK_FLAGS_KEY, checkInterpretation, recordFeedbackFlag } from '../src/interpretationFeedback.js'
 
 const caseId = 'normal-sinus-rhythm-01'
 const questions = [
@@ -139,4 +140,55 @@ test('guided exposure protects only the selected new case', () => {
   const otherNewCase = recordAttempt(sameCase.progress, attempt({ id: 'attempt-3', caseId: 'sinus-tachycardia-02' }))
   assert.equal(sameCase.attempt.rated, false)
   assert.equal(otherNewCase.attempt.rated, true)
+})
+
+test('interpretation checker recognises a clear case-consistent explanation', () => {
+  const feedback = checkInterpretation('Normal sinus rhythm at 75 bpm. P waves are present before each QRS. Normal axis. PR interval is 160 ms and QRS duration is 80 ms. There is no significant ST/T abnormality.', CASES[0])
+  assert.equal(feedback.status, 'reviewed')
+  assert.deepEqual(feedback.clear.map((item) => item.id), ['rate', 'rhythm', 'axis', 'pWaves', 'pr', 'qrs', 'stt'])
+  assert.deepEqual(feedback.contradictions, [])
+  assert.deepEqual(feedback.missing, [])
+})
+
+test('interpretation checker reports incomplete and contradictory findings', () => {
+  const incomplete = checkInterpretation('Normal sinus rhythm at 75 bpm.', CASES[0])
+  assert.deepEqual(incomplete.clear.map((item) => item.id), ['rate', 'rhythm'])
+  assert.ok(incomplete.missing.includes('P waves'))
+
+  const contradictory = checkInterpretation('Sinus tachycardia at 120 bpm with right axis deviation and a wide QRS.', CASES[0])
+  assert.deepEqual(contradictory.contradictions.map((item) => item.id), ['rate', 'rhythm', 'axis', 'qrs'])
+})
+
+test('interpretation checker handles negation and uncertainty without keyword credit', () => {
+  const negated = checkInterpretation('This is not normal sinus rhythm. P waves are not present.', CASES[0])
+  assert.deepEqual(negated.contradictions.map((item) => item.id), ['rhythm', 'pWaves'])
+  assert.deepEqual(negated.clear, [])
+
+  const uncertain = checkInterpretation('Maybe this is normal sinus rhythm at 75 bpm.', CASES[0])
+  assert.deepEqual(uncertain.uncertain.map((item) => item.id), ['rate', 'rhythm'])
+  assert.deepEqual(uncertain.clear, [])
+})
+
+test('interpretation checker handles blank and unrecognised wording safely', () => {
+  assert.equal(checkInterpretation('   ', CASES[0]).status, 'blank')
+  const unrecognised = checkInterpretation('The tracing has a calm-looking shape.', CASES[0])
+  assert.equal(unrecognised.status, 'unrecognised')
+  assert.equal(unrecognised.missing.length, 7)
+  assert.equal(unrecognised.checklist.length, 4)
+})
+
+test('reviewing written feedback cannot add attempts or change rating', () => {
+  const progress = recordAttempt(emptyProgress(), attempt()).progress
+  const snapshot = JSON.stringify(progress)
+  checkInterpretation('Normal sinus rhythm.', CASES[0])
+  checkInterpretation('Normal sinus rhythm at 75 bpm.', CASES[0])
+  assert.equal(JSON.stringify(progress), snapshot)
+})
+
+test('feedback flags stay in their separate local storage record', () => {
+  const memory = new Map()
+  const storage = { getItem: (key) => memory.get(key) ?? null, setItem: (key, value) => memory.set(key, value) }
+  assert.equal(recordFeedbackFlag(storage, { caseId, interpretation: 'text', createdAt: 'now' }).ok, true)
+  assert.equal(JSON.parse(memory.get(FEEDBACK_FLAGS_KEY)).length, 1)
+  assert.equal(memory.has('tete-progress-v1'), false)
 })
