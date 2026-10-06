@@ -4,14 +4,16 @@ Tete is a lightweight learning interface for health-science students to practise
 
 Learner-testing URL: **https://mtaver.github.io/TETE/**. GitHub reports the Pages deployment as successful; network-level access may still depend on the learner’s connection to `github.io`.
 
-The application includes a responsive home page and a small library of six stable-ID introductory cases: two schematic variants each of normal sinus rhythm, sinus bradycardia, and sinus tachycardia. Diagnosis names remain hidden in Unseen Assessment and during interpretation. Each case uses a purpose-built schematic SVG ECG with fixed, auditable measurements rather than an AI-generated image or patient recording.
+The application includes a responsive home page and a small library of six stable-ID introductory cases: two schematic variants each of normal sinus rhythm, sinus bradycardia, and sinus tachycardia. Diagnosis names remain hidden in Assessment Mode and during independent interpretation. Each case uses a purpose-built schematic SVG ECG with fixed, auditable measurements rather than an AI-generated image or patient recording.
 
 Learners can work through rate, rhythm, axis, P waves, PR interval, QRS duration, and ST/T findings; request progressive hints; explain their reasoning; revise answers; and receive deterministic teaching feedback. Free-text explanations are displayed for self-comparison but are not evaluated or scored.
 
-Step 3 adds two explicit modes:
+Practice begins with a simple mode-selection page:
 
-- **Guided Practice** provides hints and post-feedback revision without rating changes.
-- **Rated Assessment** hides hints and answers until submission. Only the first submission of an unseen case can change the prototype rating; later attempts are labelled and recorded as practice.
+- **Learning Mode** provides topic search, guided cases, hints, post-feedback revision, and case percentages without rating changes.
+- **Assessment Mode** presents diagnosis-neutral cases and hides hints and answers until submission. Only the first submission of an unseen case can change the prototype rating; later attempts are clearly labelled and recorded as practice.
+
+The libraries, case screens, mode selector, and progress dashboard have distinct hash routes, so browser Back and Forward follow the learner’s path. The previous `#practice` entry remains the mode-selection route. Detailed rules are collapsed under **How scoring works**, while history and dashboard information live behind **View progress**.
 
 Learners can filter the library by a target skill such as rate or rhythm. After feedback, Tete recommends a practice area from incorrect or “Not sure” answers and links to a relevant teaching resource. Recommendations are practice guidance, not evidence of mastery.
 
@@ -19,7 +21,7 @@ Learners can filter the library by a target skill such as rate or rhythm. After 
 
 The case library includes a labelled “What would you like to learn?” search over a bundled topic catalogue. It recognizes names and common synonyms for normal sinus rhythm, sinus bradycardia, sinus tachycardia, heart rate, and rhythm. Results contain short sourced explanations and link only to the six bundled cases.
 
-Topic results and the existing skill browser start Guided Practice directly, so hints and revision remain available and the weighted score is shown without changing the prototype rating. Rated cases remain in a separate, diagnosis-neutral **Unseen assessment** section. The first assessment of an unseen stable case ID remains rating-eligible; any case whose answer key was already exposed remains practice-only.
+Topic results and the existing skill browser start Learning Mode directly, so hints and revision remain available and the weighted score is shown without changing the prototype rating. Independently interpreted cases remain in the separate, diagnosis-neutral **Assessment Mode** library. The first assessment of an unseen stable case ID remains rating-eligible; any case whose answer key was already exposed remains practice-only.
 
 Search is deterministic and local—there is no internet search or AI generation. The catalogue, explanations, and matching logic are part of the application bundle and are cached by the PWA for offline use. External source pages are still labelled as internet-required.
 
@@ -100,7 +102,7 @@ Question weights live in `src/scoringConfig.js` and sum to 100: rhythm 20; rate,
 
 The case percentage is the sum of weights for correct structured answers. Incorrect, blank, and “Not sure” answers earn zero for that item. Free-text interpretation is never scored. Configured prototype difficulties are 580–630 across the six cases; these are provisional educational settings rather than validated difficulty estimates.
 
-The prototype rating begins at 600 and is bounded from 100 to 1200. For the first submission of an unseen case in Rated Assessment only:
+The prototype rating begins at 600 and is bounded from 100 to 1200. For the first submission of an unseen case in Assessment Mode only:
 
 ```text
 expected = 1 / (1 + 10 ^ ((case difficulty - current rating) / 400))
@@ -114,7 +116,7 @@ Performance and expected values are expressed from 0 to 1. At the starting ratin
 
 Submitted attempts, weighted scores, rating history, and skill summaries are stored in browser `localStorage`. Records remain on the current browser/device and do not sync elsewhere. Existing version-one records are read without rewriting or discarding their attempts. Completed attempts remain in history even when rating falls.
 
-Rating eligibility is tracked separately by stable case ID. An unseen case can affect rating only when first submitted in Rated Assessment. Once any attempt on that case exposes its answer key—Guided Practice or Rated Assessment—every later attempt on that case is practice-only. Duplicate attempt identifiers are ignored.
+Rating eligibility is tracked separately by stable case ID. An unseen case can affect rating only when first submitted in Assessment Mode. Once any attempt on that case exposes its answer key—Learning Mode or Assessment Mode—every later attempt on that case is practice-only. Duplicate attempt identifiers are ignored.
 
 The progress panel includes a confirmed reset control. If storage is missing, corrupt, blocked, or full, the case remains usable and shows a warning that progress may not persist.
 
@@ -129,7 +131,7 @@ npm test
 npm run build
 ```
 
-The automated tests cover weighted results; guided versus rated attempts; answer exposure; independent eligibility for original and variant IDs; duplicate protection; rating bounds; serialization persistence; old-record preservation across app versions; corrupt storage; reset behavior; stable IDs; waveform/rate/rhythm/interval answer-key consistency; teaching support; topic names and synonyms; empty and unmatched searches; topic-to-case mappings; and correct, incomplete, contradictory, negated, uncertain, blank, and unrecognised written interpretations. They also verify that feedback review cannot alter attempts or rating and that feedback flags use separate local storage. Production verification additionally checks generated PWA assets and service-worker-backed offline navigation.
+The automated tests cover weighted results; guided versus rated attempts; answer exposure; independent eligibility for original and variant IDs; duplicate protection; rating bounds; serialization persistence; old-record preservation across app versions; corrupt storage; reset behavior; stable IDs; waveform/rate/rhythm/interval answer-key consistency; teaching support; topic names and synonyms; empty and unmatched searches; topic-to-case mappings; mode/library/case route parsing (including the legacy entry); and correct, incomplete, contradictory, negated, uncertain, blank, and unrecognised written interpretations. They also verify that feedback review cannot alter attempts or rating and that feedback flags use separate local storage. Production verification additionally checks generated PWA assets and service-worker-backed offline navigation.
 
 Step 6 production UI checks covered a 375 × 812 viewport, single-column reflow, keyboard traversal, visible focus (including the skip link), accessible form names, horizontal keyboard-focusable ECG scrolling, and focus/status announcement after submission. The browser harness did not expose a reliable native 200% zoom control; the narrower mobile reflow passed, but an explicit 200% browser-zoom check remains in the pre-study manual checklist. The local two-build PWA update test passed; it should still be repeated on the intended HTTPS staging deployment because server/CDN cache headers are not represented by Vite preview.
 

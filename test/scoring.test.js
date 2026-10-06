@@ -4,6 +4,7 @@ import { emptyProgress, loadProgress, ratingChange, recordAttempt, resetProgress
 import { CASES, validateCase } from '../src/cases.js'
 import { TOPICS, searchTopics } from '../src/topics.js'
 import { FEEDBACK_FLAGS_KEY, checkInterpretation, recordFeedbackFlag } from '../src/interpretationFeedback.js'
+import { parseRoute } from '../src/navigation.js'
 
 const caseId = 'normal-sinus-rhythm-01'
 const questions = [
@@ -12,6 +13,17 @@ const questions = [
 ]
 const correct = Object.fromEntries(questions.map((q) => [q.id, q.answer]))
 const attempt = (overrides = {}) => ({ id: 'attempt-1', caseId, mode: 'rated', percentage: 100, correctness: {}, createdAt: '2026-10-05T00:00:00.000Z', ...overrides })
+
+test('navigation separates practice modes and preserves legacy entry links', () => {
+  const caseIds = CASES.map((item) => item.id)
+  assert.deepEqual(parseRoute('#practice', caseIds), { view: 'modes' })
+  assert.deepEqual(parseRoute('#learning', caseIds), { view: 'learning' })
+  assert.deepEqual(parseRoute('#assessment', caseIds), { view: 'assessment' })
+  assert.deepEqual(parseRoute('#progress', caseIds), { view: 'progress' })
+  assert.deepEqual(parseRoute(`#case/${caseId}/learning`, caseIds), { view: 'case', caseId, mode: 'learning' })
+  assert.deepEqual(parseRoute(`#case/${caseId}/assessment`, caseIds), { view: 'case', caseId, mode: 'assessment' })
+  assert.deepEqual(parseRoute('#case/not-a-case/assessment', caseIds), { view: 'home' })
+})
 
 test('weighted scoring handles all-correct, mixed, all-incorrect, and Not sure', () => {
   assert.deepEqual(scoreAnswers(questions, correct, caseId), { earned: 100, total: 100, percentage: 100 })
