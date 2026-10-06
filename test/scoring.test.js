@@ -2,6 +2,7 @@ import test from 'node:test'
 import assert from 'node:assert/strict'
 import { emptyProgress, loadProgress, ratingChange, recordAttempt, resetProgress, saveProgress, scoreAnswers } from '../src/progress.js'
 import { CASES, validateCase } from '../src/cases.js'
+import { TOPICS, searchTopics } from '../src/topics.js'
 
 const caseId = 'normal-sinus-rhythm-01'
 const questions = [
@@ -99,4 +100,28 @@ test('existing version-one progress loads without rewriting attempts', () => {
   const existing = { version: 1, rating: 640, attempts: [{ id: 'old', caseId, percentage: 100, rated: true }] }
   const storage = { getItem: () => JSON.stringify(existing) }
   assert.deepEqual(loadProgress(storage).progress, existing)
+})
+
+test('local topic search matches names and common synonyms', () => {
+  assert.deepEqual(searchTopics('NSR').map((topic) => topic.id), ['normal-sinus-rhythm'])
+  assert.deepEqual(searchTopics('slow heart rate').map((topic) => topic.id), ['sinus-bradycardia'])
+  assert.deepEqual(searchTopics('fast heart rate').map((topic) => topic.id), ['sinus-tachycardia'])
+  assert.deepEqual(searchTopics('bpm').map((topic) => topic.id), ['rate'])
+  assert.deepEqual(searchTopics('regularity').map((topic) => topic.id), ['rhythm'])
+})
+
+test('topic search handles empty and unmatched searches without invented results', () => {
+  assert.deepEqual(searchTopics(''), [])
+  assert.deepEqual(searchTopics('   '), [])
+  assert.deepEqual(searchTopics('atrial fibrillation'), [])
+})
+
+test('every topic maps only to existing cases and has offline sourced teaching text', () => {
+  const caseIds = new Set(CASES.map((caseData) => caseData.id))
+  for (const topic of TOPICS) {
+    assert.ok(topic.explanation.length > 30)
+    assert.ok(topic.sourceKey)
+    assert.ok(topic.caseIds.length > 0)
+    assert.ok(topic.caseIds.every((id) => caseIds.has(id)))
+  }
 })

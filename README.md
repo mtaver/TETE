@@ -2,7 +2,7 @@
 
 Tete is a lightweight learning interface for health-science students to practise a deliberate ECG interpretation cycle: observe, reason, explain, receive guidance, revise, and improve.
 
-Learner-testing URL: **https://mtaver.github.io/TETE/**. The initial workflow build passed, but the site is pending the one-time GitHub Pages enablement described in [`docs/DEPLOYMENT.md`](docs/DEPLOYMENT.md); live checks are not yet marked as passed.
+Learner-testing URL: **https://mtaver.github.io/TETE/**. GitHub reports the Pages deployment as successful; network-level access may still depend on the learner’s connection to `github.io`.
 
 The application includes a responsive home page and a small case library with three stable-ID introductory cases: a normal-rate sinus rhythm, sinus bradycardia, and sinus tachycardia. Diagnosis names remain hidden in the library and during interpretation. Each case uses a purpose-built schematic SVG ECG with fixed, auditable measurements rather than an AI-generated image or patient recording.
 
@@ -14,6 +14,14 @@ Step 3 adds two explicit modes:
 - **Rated Assessment** hides hints and answers until submission. Only the first submission of an unseen case can change the prototype rating; later attempts are labelled and recorded as practice.
 
 Learners can filter the library by a target skill such as rate or rhythm. After feedback, Tete recommends a practice area from incorrect or “Not sure” answers and links to a relevant teaching resource. Recommendations are practice guidance, not evidence of mastery.
+
+## Local topic search
+
+The case library includes a labelled “What would you like to learn?” search over a bundled topic catalogue. It recognizes names and common synonyms for normal sinus rhythm, sinus bradycardia, sinus tachycardia, heart rate, and rhythm. Results contain short sourced explanations and link only to the existing three cases.
+
+Topic results and the existing skill browser start Guided Practice directly, so hints and revision remain available and the weighted score is shown without changing the prototype rating. Rated cases remain in a separate, diagnosis-neutral **Unseen assessment** section. The first assessment of an unseen stable case ID remains rating-eligible; any case whose answer key was already exposed remains practice-only.
+
+Search is deterministic and local—there is no internet search or AI generation. The catalogue, explanations, and matching logic are part of the application bundle and are cached by the PWA for offline use. External source pages are still labelled as internet-required.
 
 The project does not include accounts, cloud sync, uploads, live AI, or diagnoses beyond these three sinus-rate examples.
 
@@ -49,7 +57,7 @@ npm install
 npm run dev
 ```
 
-Open the local URL printed by Vite (usually `http://localhost:5173`).
+Open the local URL printed by Vite (usually `http://localhost:5173/TETE/`).
 
 ## Production build
 
@@ -113,7 +121,7 @@ npm test
 npm run build
 ```
 
-The automated tests cover weighted results; guided versus rated attempts; answer exposure; per-case eligibility; duplicate protection; rating bounds; serialization persistence; old-record preservation across app versions; corrupt storage; reset behavior; stable IDs; and waveform/rate/interval answer-key consistency for all three cases. Production verification additionally checks generated PWA assets and service-worker-backed offline navigation.
+The automated tests cover weighted results; guided versus rated attempts; answer exposure; per-case eligibility; duplicate protection; rating bounds; serialization persistence; old-record preservation across app versions; corrupt storage; reset behavior; stable IDs; waveform/rate/interval answer-key consistency; topic names and synonyms; empty and unmatched searches; and topic-to-existing-case mappings. Production verification additionally checks generated PWA assets and service-worker-backed offline navigation.
 
 Step 6 production UI checks covered a 375 × 812 viewport, single-column reflow, keyboard traversal, visible focus (including the skip link), accessible form names, horizontal keyboard-focusable ECG scrolling, and focus/status announcement after submission. The browser harness did not expose a reliable native 200% zoom control; the narrower mobile reflow passed, but an explicit 200% browser-zoom check remains in the pre-study manual checklist. The local two-build PWA update test passed; it should still be repeated on the intended HTTPS staging deployment because server/CDN cache headers are not represented by Vite preview.
 

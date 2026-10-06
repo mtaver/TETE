@@ -2,6 +2,7 @@ import { useEffect, useId, useRef, useState } from 'react'
 import { CASES, CASE_SOURCES, SKILLS, SKILL_LABELS, leadMorphology } from './cases.js'
 import { SCORING_CONFIG, WEIGHT_RATIONALE } from './scoringConfig.js'
 import { emptyProgress, loadProgress, recordAttempt, resetProgress, saveProgress, scoreAnswers, skillsNeedingPractice } from './progress.js'
+import { searchTopics } from './topics.js'
 import PwaStatus from './PwaStatus.jsx'
 
 const learningSteps = [
@@ -66,8 +67,52 @@ function ProgressPanel({ progress, storageMessage, onReset }) {
 
 function CaseLibrary({ progress, onSelect }) {
   const [skill, setSkill] = useState('all')
+  const [query, setQuery] = useState('')
   const matching = CASES.filter((item) => skill === 'all' || item.skills.includes(skill))
-  return <section className="library" aria-labelledby="library-title"><p className="kicker">Case library</p><h1 id="library-title">Choose a practice case.</h1><p className="library-intro">Diagnoses stay hidden until feedback so you can interpret each tracing independently.</p><label className="skill-filter" htmlFor="skill-filter">I want to practise <select id="skill-filter" value={skill} onChange={(event) => setSkill(event.target.value)}>{SKILLS.map(([id, label]) => <option value={id} key={id}>{label}</option>)}</select></label><div className="case-grid">{matching.map((caseData) => { const attempts = progress.attempts.filter((attempt) => attempt.caseId === caseData.id); return <article className="case-tile" key={caseData.id}><p className="case-number">{caseData.number}</p><h2>Interpret the tracing</h2><p>{caseData.libraryDescription}</p><p className="case-meta">{attempts.length ? `${attempts.length} attempt${attempts.length === 1 ? '' : 's'} recorded · answer key seen` : 'Unseen · rating eligible in assessment'}</p><button type="button" className="primary-button" onClick={() => onSelect(caseData.id)}>Open {caseData.number}</button></article> })}</div>{!matching.length && <p>No cases currently match this skill.</p>}</section>
+  const topics = searchTopics(query)
+  const hasQuery = Boolean(query.trim())
+  const caseById = (id) => CASES.find((item) => item.id === id)
+
+  return <section className="library" aria-labelledby="library-title">
+    <p className="kicker">Case library</p>
+    <h1 id="library-title">Choose how to practise.</h1>
+    <p className="library-intro">Search local teaching topics for guided help, or enter a neutral unseen assessment. Topic content and search remain available offline.</p>
+
+    <section className="topic-search" aria-labelledby="topic-search-title">
+      <h2 id="topic-search-title">What would you like to learn?</h2>
+      <label htmlFor="topic-query">Search ECG topics</label>
+      <input id="topic-query" type="search" value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Try “slow heart rate”, “NSR”, or “rhythm”" autoComplete="off" />
+      <div className="search-status" role="status" aria-live="polite" aria-atomic="true">{hasQuery ? topics.length ? `${topics.length} matching topic${topics.length === 1 ? '' : 's'}.` : `No local topic or case matches “${query.trim()}”.` : 'Enter a topic or common synonym to find guided practice.'}</div>
+      {hasQuery && topics.length > 0 && <div className="topic-results">{topics.map((topic) => {
+        const topicCases = topic.caseIds.map(caseById).filter(Boolean)
+        const source = CASE_SOURCES[topic.sourceKey]
+        return <article className="topic-card" key={topic.id}>
+          <h3>{topic.name}</h3>
+          <p>{topic.explanation}</p>
+          <p className="topic-source">Source: <a href={source.url} target="_blank" rel="noreferrer">{source.title} (internet required)</a>. This explanation remains available offline.</p>
+          {topicCases.length ? <div className="topic-actions">{topicCases.map((caseData) => <button type="button" className="secondary-button" key={caseData.id} onClick={() => onSelect(caseData.id, 'guided')}>Practise this topic · {caseData.number}</button>)}</div> : <p className="no-match">No existing case is available for this topic.</p>}
+        </article>
+      })}</div>}
+    </section>
+
+    <section className="guided-browser" aria-labelledby="guided-browser-title">
+      <h2 id="guided-browser-title">Browse guided practice</h2>
+      <label className="skill-filter" htmlFor="skill-filter">I want to practise <select id="skill-filter" value={skill} onChange={(event) => setSkill(event.target.value)}>{SKILLS.map(([id, label]) => <option value={id} key={id}>{label}</option>)}</select></label>
+      <div className="case-grid">{matching.map((caseData) => <article className="case-tile" key={caseData.id}><p className="case-number">{caseData.number}</p><h3>Interpret the tracing</h3><p>{caseData.libraryDescription}</p><button type="button" className="secondary-button" onClick={() => onSelect(caseData.id, 'guided')}>Start guided {caseData.number}</button></article>)}</div>
+      {!matching.length && <p className="no-match">No existing case matches this skill.</p>}
+    </section>
+
+    <section className="assessment-library" aria-labelledby="assessment-title">
+      <p className="kicker">Independent first attempt</p>
+      <h2 id="assessment-title">Unseen assessment</h2>
+      <p>Diagnosis and topic labels remain hidden until submission. Only the first assessment of an unseen case can change the prototype rating.</p>
+      <div className="case-grid">{CASES.map((caseData) => {
+        const attempts = progress.attempts.filter((attempt) => attempt.caseId === caseData.id)
+        const seen = attempts.length > 0
+        return <article className="case-tile" key={caseData.id}><p className="case-number">{caseData.number}</p><h3>Interpret the tracing</h3><p>{caseData.libraryDescription}</p><p className="case-meta">{seen ? `${attempts.length} attempt${attempts.length === 1 ? '' : 's'} recorded · answer key seen · practice only` : 'Unseen · rating eligible'}</p><button type="button" className="primary-button" onClick={() => onSelect(caseData.id, 'rated')}>{seen ? `Take practice assessment · ${caseData.number}` : `Start unseen assessment · ${caseData.number}`}</button></article>
+      })}</div>
+    </section>
+  </section>
 }
 
 function ModeChooser({ answerKeySeen, onChoose }) {
@@ -96,7 +141,7 @@ function Practice({ onActiveAttempt }) {
   const [caseId, setCaseId] = useState(null); const [mode, setMode] = useState(null); const [answers, setAnswers] = useState({}); const [hints, setHints] = useState({}); const [reasoning, setReasoning] = useState(''); const [submitted, setSubmitted] = useState(false); const [resultAttempt, setResultAttempt] = useState(null); const [attemptId, setAttemptId] = useState(makeAttemptId)
   const caseData = CASES.find((item) => item.id === caseId)
   useEffect(() => { onActiveAttempt(Boolean(caseData && mode && !submitted)); return () => onActiveAttempt(false) }, [caseData, mode, submitted, onActiveAttempt])
-  const selectCase = (id) => { setCaseId(id); setMode(null); setSubmitted(false); setAnswers({}); setHints({}); setReasoning(''); setResultAttempt(null); window.scrollTo({ top: 0 }) }
+  const selectCase = (id, selectedMode = null) => { setCaseId(id); setMode(selectedMode); setSubmitted(false); setAnswers({}); setHints({}); setReasoning(''); setResultAttempt(null); setAttemptId(makeAttemptId()); window.scrollTo({ top: 0 }) }
   const startMode = (selectedMode) => { setMode(selectedMode); setAnswers({}); setHints({}); setReasoning(''); setSubmitted(false); setResultAttempt(null); setAttemptId(makeAttemptId()); setTimeout(() => document.querySelector('.case-form')?.scrollIntoView({ behavior: 'smooth' }), 0) }
   const submit = (event) => { event.preventDefault(); if (submitted) return; const score = scoreAnswers(caseData.questions, answers, caseData.id); const correctness = Object.fromEntries(caseData.questions.map((question) => [question.id, answers[question.id] === question.answer])); const recorded = recordAttempt(progress, { id: attemptId, caseId: caseData.id, mode, percentage: score.percentage, earned: score.earned, total: score.total, correctness, createdAt: new Date().toISOString() }); setProgress(recorded.progress); setResultAttempt(recorded.attempt); setSubmitted(true); const saved = saveProgress(storage, recorded.progress); if (!saved.ok) setStorageMessage(saved.message); window.scrollTo({ top: 0, behavior: 'smooth' }) }
   const revise = () => { setSubmitted(false); setAttemptId(makeAttemptId()); window.scrollTo({ top: 0, behavior: 'smooth' }) }
