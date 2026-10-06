@@ -2,7 +2,7 @@
 
 Tete is a lightweight learning interface for health-science students to practise a deliberate ECG interpretation cycle: observe, reason, explain, receive guidance, revise, and improve.
 
-Live learner-testing site: **https://mtaver.github.io/TETE/**
+Learner-testing URL: **https://mtaver.github.io/TETE/**. The initial workflow build passed, but the site is pending the one-time GitHub Pages enablement described in [`docs/DEPLOYMENT.md`](docs/DEPLOYMENT.md); live checks are not yet marked as passed.
 
 The application includes a responsive home page and a small case library with three stable-ID introductory cases: a normal-rate sinus rhythm, sinus bradycardia, and sinus tachycardia. Diagnosis names remain hidden in the library and during interpretation. Each case uses a purpose-built schematic SVG ECG with fixed, auditable measurements rather than an AI-generated image or patient recording.
 
@@ -67,6 +67,8 @@ Vite is configured for the GitHub Pages project path `/TETE/`. The generated app
 Pushing `main` runs `.github/workflows/deploy-pages.yml`. The workflow installs the locked dependencies with pnpm, runs the tests, builds the production bundle, uploads `dist/` as the Pages artifact, and deploys it with GitHub’s official Pages actions. The commit SHA is shown as the deployed build identifier so PWA update tests can distinguish releases.
 
 The repository’s Pages source must be set to **GitHub Actions** under **Settings → Pages → Build and deployment → Source**. The workflow needs `pages: write` and `id-token: write`, both scoped in the workflow file.
+
+Deployment status, exact enablement steps, and the uncompleted live verification checklist are recorded in [`docs/DEPLOYMENT.md`](docs/DEPLOYMENT.md).
 
 ## Case validation
 
