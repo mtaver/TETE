@@ -45,7 +45,28 @@ const fr = {
   offline: 'Hors ligne', offlineText: 'les cas, indices, commentaires et progrès enregistrés restent disponibles.', updateAvailable: 'Mise à jour disponible.', updatePreserve: 'Votre progression locale sera conservée.', finishUpdate: 'Terminez cette tentative pour mettre à jour', applyUpdate: 'Appliquer la mise à jour', language: 'Langue', storageWarning: 'Le stockage du navigateur est indisponible ou n’a pas pu être mis à jour. Vous pouvez continuer, mais la progression risque de ne pas être conservée.',
 }
 
-export const dictionaries = { en, fr }
+const sw = {
+  practice: 'Mazoezi', viewProgress: 'Tazama maendeleo', backHome: 'Rudi nyumbani', backModes: 'Rudi kwenye aina za mazoezi', learningMode: 'Hali ya Kujifunza', assessmentMode: 'Hali ya Tathmini', chooseMode: 'Chagua hali', chooseLearning: 'Chagua Hali ya Kujifunza', chooseAssessment: 'Chagua Hali ya Tathmini',
+  nextStep: 'Hatua yako inayofuata', continueLearning: 'Endelea kujifunza', chooseTopic: 'Chagua mada nyingine badala yake', learningDescription: 'Fanya mazoezi kwa vidokezo, mrejesho na marekebisho.',
+  education: 'Kwa elimu pekee. Si kwa utambuzi wa kitabibu.', reviewStatus: 'Mapitio ya mtaalamu wa maudhui ya kesi:', notReviewed: 'Bado hayajapitiwa', frenchNotice: 'Tafsiri za Kifaransa ni za muda na hazijapitiwa na mwalimu wa ECG mwenye lugha mbili.', swahiliNotice: 'Provisional translation. Tafsiri za Kiswahili bado hazijapitiwa na mwalimu wa ECG mwenye lugha mbili.',
+  backLearning: 'Rudi kwenye Hali ya Kujifunza', backAssessment: 'Rudi kwenye Hali ya Tathmini', foundations: 'Misingi', readSystematically: 'Soma ECG kwa utaratibu.', learningCaseIntro: 'Tumia vidokezo unapovihitaji, kisha rekebisha baada ya mrejesho. Kagua mapigo, asili ya sinus, intervals, axis na matokeo ya ST/T.', assessmentCaseIntro: 'Utambuzi na mada hubaki zimefichwa hadi utume majibu. Kagua mapigo, asili ya sinus, intervals, axis na matokeo ya ST/T.',
+  schematic: 'ECG ya kielimu ya mchoro', resting: 'ECG ya mapumziko ya leads 12', rhythmStrip: 'Rhythm strip ya lead II', figureNote: 'Mchoro uliotengenezwa kwa elimu—si rekodi ya mgonjwa. Gridi ya mlalo: kisanduku kidogo 1 = 40 ms; calibration ya wima = 10 mm (1 mV).', expertReview: 'Mapitio ya mtaalamu:',
+  whatSee: 'Unaona nini?', hintsLearning: 'Vidokezo vinapatikana na kurekebisha hakupunguzi rating.', hintsAssessment: 'Vidokezo na majibu hubaki yamefichwa hadi utume.', notSurePrompt: 'Chagua “Sina uhakika” inapohitajika.', chooseFinding: 'Chagua matokeo yanayofaa zaidi', selectAnswer: 'Chagua jibu', notSure: 'Sina uhakika', showHint: 'Onyesha kidokezo', hideHint: 'Ficha kidokezo', tryThis: 'Jaribu hivi:',
+  explain: 'Eleza tafsiri yako', freeNotScored: 'Maandishi haya hayapewi alama.', placeholder: 'Nadhani ECG hii inaonyesha… kwa sababu…', structuredOnly: 'Majibu yenye muundo pekee ndiyo yanayohesabiwa kwenye asilimia yenye uzito.', submitPractice: 'Tuma zoezi', submitAssessment: 'Tuma tathmini',
+  yourFocus: 'Lengo lako', fullWorkflow: 'Kamilisha tafsiri nzima kama kawaida. Kikao hiki cha Hali ya Kujifunza hakiwezi kubadilisha rating yako.', reviewPractice: 'Zoezi la mapitio—halibadilishi rating yako.',
+  topicSearch: 'Ungependa kujifunza nini?', searchTopics: 'Tafuta mada za ECG', searchPlaceholder: 'Jaribu “mapigo ya polepole”, “sinus rhythm” au “rhythm”', searchEmpty: 'Andika mada au jina jingine la kawaida ili kupata zoezi lenye mwongozo.', browseLearning: 'Vinjari kesi za Hali ya Kujifunza', practiseLabel: 'Nataka kufanya mazoezi ya', allSkills: 'Ujuzi wote', startLearning: 'Anza Hali ya Kujifunza', sourceInternet: 'intaneti inahitajika', offlineExplanation: 'Maelezo haya yanapatikana bila intaneti.', noCaseTopic: 'Hakuna kesi iliyopo kwa mada hii.', noCaseSkill: 'Hakuna kesi iliyopo inayolingana na ujuzi huu.',
+  assessmentIntro: 'Utambuzi na dalili za mada hubaki zimefichwa hadi utume. Jaribio la kwanza pekee la kesi ambayo hujaiona linaweza kubadilisha prototype skill rating.', noEligible: 'Hakuna kesi iliyobaki inayostahili rating', noEligibleText: 'Umeona majibu sahihi ya kila kesi. Bado unaweza kufanya tathmini za mazoezi au kuendelea na vidokezo na marekebisho katika Hali ya Kujifunza.', goLearning: 'Nenda kwenye Hali ya Kujifunza', interpretTracing: 'Tafsiri tracing', previouslySeen: 'Umeiona · zoezi pekee', unseenEligible: 'Hujaiona · inastahili rating', hintsHidden: 'Vidokezo na majibu hubaki yamefichwa hadi utume.', startAssessment: 'Anza Hali ya Tathmini', startPracticeAssessment: 'Anza tathmini ya mazoezi',
+  storedDevice: 'Imehifadhiwa kwenye kifaa hiki', dashboard: 'Dashibodi ya maendeleo', currentRating: 'Prototype rating ya sasa', deviceNote: 'Maendeleo yanahifadhiwa kwenye browser hii na kifaa hiki pekee. Hayalandanishwi na yanaweza kupotea data ya browser ikifutwa.', ratedCompleted: 'Tathmini za rating zilizokamilika', practiceCompleted: 'Majaribio ya mwongozo/mazoezi yaliyokamilika', totalCompleted: 'Jumla ya majaribio yaliyotumwa', scoreHistory: 'Historia ya alama', noAttempts: 'Hakuna jaribio lililohifadhiwa bado.', historyNote: 'Alama za mwongozo na marudio zinaonyesha zoezi lililosaidiwa au lililoonekana awali. Kuongezeka kwake si ushahidi wa maendeleo huru.', ratingHistory: 'Historia ya rating', completeUnseen: 'Kamilisha tathmini ya kesi ambayo hujaiona ili kuisasisha.', startingRating: 'Rating ya mwanzo', skillsPractice: 'Ujuzi unaohitaji mazoezi zaidi', noSkillLow: 'Hakuna ujuzi ulio chini ya 80% bado.', completeCaseGuidance: 'Kamilisha kesi ili kuona mwongozo.',
+  focusedReview: 'Mapitio yaliyolengwa', reviewMistakes: 'Pitia makosa', noMistakes: 'Hakuna makosa yaliyohifadhiwa bado.', yourAnswer: 'Jibu lako:', correctAnswer: 'Jibu sahihi:', originalMissing: 'Jibu lako la awali halikuhifadhiwa.', noAnswer: 'Hakuna jibu lililochaguliwa', practiseSkill: 'Fanya mazoezi ya ujuzi huu', dateUnavailable: 'Tarehe haipatikani', legacyCase: 'Kesi ya zamani',
+  resetProgress: 'Weka upya maendeleo', resetQuestion: 'Ufute majaribio yote ya kifaa hiki na kurudisha rating kuwa {rating}?', yesReset: 'Ndiyo, weka upya maendeleo', cancel: 'Ghairi',
+  caseScore: 'Alama ya kesi: {score}%', weightedPoints: 'Pointi {earned} kati ya {total} zenye uzito kutoka kwa majibu yenye muundo. Maandishi hayapewi alama.', recordedPractice: 'Imehifadhiwa kama zoezi', learningNoRating: 'Hali ya Kujifunza haibadilishi rating.', protectedRating: 'Majibu sahihi ya kesi hii yalionekana tayari, kwa hiyo rating imelindwa.', reviseAnswers: 'Rekebisha majibu', returnLearning: 'Rudi kwenye Hali ya Kujifunza', returnAssessment: 'Rudi kwenye Hali ya Tathmini', focusedComplete: 'Kikao kilicholengwa kimekamilika', completedFocused: 'Umekamilisha zoezi lililolenga {skill}. Limehifadhiwa kama zoezi, si ushahidi wa umahiri huru.', reviseSkill: 'Rekebisha {skill} na upitie tena', matchesKey: '{skill} imelingana na jibu sahihi.', revise: 'Rekebisha {skill}.', matches: 'Inalingana', review: 'Pitia', points: 'pointi {points}',
+  interpretationWarning: 'Mrejesho wa mazoezi wa kiotomatiki—unaweza kukosa au kutoelewa maneno.', aboutInterpretation: 'Kuhusu tafsiri yako', blankFeedback: 'Hujaandika tafsiri. Jaribu kueleza jinsi mapigo, P waves, intervals, axis na matokeo ya ST/T yanavyounga mkono hitimisho lako. Hakuna adhabu ya alama au rating.', unrecognised: 'Sikuweza kutafsiri maneno haya kwa uhakika. Tumia orodha ya kujipitia iliyo hapa chini.', clearlyStated: 'Matokeo yaliyoelezwa wazi', agreesKey: 'maneno yanaendana na jibu sahihi la kesi hii.', contradictions: 'Migongano inayowezekana', uncertainStatements: 'Kauli zisizo na uhakika', missingSteps: 'Hatua za kufikiri ambazo hazikutambuliwa wazi:', selfChecklist: 'Orodha ya kujipitia', exampleInterpretation: 'Mfano wa tafsiri', reviseInterpretation: 'Rekebisha tafsiri yako', revisionNoAttempt: 'Kupitia maandishi yaliyorekebishwa hakuundi jaribio wala kubadilisha alama au rating.', reviewRevision: 'Pitia tafsiri iliyorekebishwa', feedbackIncorrect: 'Mrejesho huu unaonekana si sahihi', flagged: 'Mrejesho umewekewa alama kwenye kifaa', flagSaved: 'Alama imehifadhiwa kwenye browser hii pekee; hakuna data iliyotumwa.',
+  frenchCheckerLimit: 'Kikagua mifumo ya Kiingereza hakitafsiri Kiswahili. Hakuna uainishaji wa kiotomatiki wa maandishi ya Kiswahili. Tumia orodha ya kujipitia iliyotafsiriwa hapa chini; maandishi yako hayapewi alama.',
+  howScoring: 'Jinsi alama zinavyohesabiwa', provisionalWeights: 'Uzito huu wa kielimu ni wa muda na si kipimo cha umahiri kilichothibitishwa kitabibu.', skill: 'Ujuzi', weight: 'Uzito', rationale: 'Sababu',
+  offline: 'Nje ya mtandao', offlineText: 'kesi, vidokezo, mrejesho na maendeleo yaliyohifadhiwa bado vinapatikana.', updateAvailable: 'Sasisho la programu linapatikana.', updatePreserve: 'Maendeleo yako ya kifaa hiki yatahifadhiwa.', finishUpdate: 'Maliza jaribio hili kabla ya kusasisha', applyUpdate: 'Tumia sasisho', language: 'Lugha', storageWarning: 'Hifadhi ya browser haipatikani au haikuweza kusasishwa. Unaweza kuendelea, lakini maendeleo yanaweza kutohifadhiwa.',
+}
+
+export const dictionaries = { en, fr, sw }
 export function translate(language, key, values = {}) {
   let value = dictionaries[language]?.[key] ?? en[key] ?? key
   Object.entries(values).forEach(([name, replacement]) => { value = value.replaceAll(`{${name}}`, String(replacement)) })
@@ -55,24 +76,54 @@ export function I18nProvider({ value, children }) { return <I18nContext.Provider
 export function useI18n() { return useContext(I18nContext) }
 
 const skillFr = { rate: 'Fréquence', rhythm: 'Rythme', axis: 'Axe QRS frontal', pWaves: 'Ondes P', pr: 'Intervalle PR', qrs: 'Durée du QRS', stt: 'Éléments ST/T' }
+const skillSw = { rate: 'Mapigo', rhythm: 'Rhythm', axis: 'Frontal QRS axis', pWaves: 'P waves', pr: 'PR interval', qrs: 'QRS duration', stt: 'Matokeo ya ST/T' }
 const diagnosisFr = { 'Normal sinus rhythm': 'Rythme sinusal normal', 'Sinus bradycardia': 'Bradycardie sinusale', 'Sinus tachycardia': 'Tachycardie sinusale' }
+const diagnosisSw = { 'Normal sinus rhythm': 'Normal sinus rhythm', 'Sinus bradycardia': 'Sinus bradycardia', 'Sinus tachycardia': 'Sinus tachycardia' }
 const optionFr = {
   'Regular sinus bradycardia': 'Bradycardie sinusale régulière', 'Regular sinus rhythm': 'Rythme sinusal régulier', 'Regular sinus tachycardia': 'Tachycardie sinusale régulière',
   'Left axis deviation': 'Déviation axiale gauche', 'Normal axis': 'Axe normal', 'Right axis deviation': 'Déviation axiale droite',
   'Absent': 'Absentes', 'Present, sinus morphology, one before each QRS': 'Présentes, morphologie sinusale, une avant chaque QRS', 'Present but unrelated to QRS complexes': 'Présentes mais sans relation avec les complexes QRS',
   'ST elevation': 'Sus-décalage du segment ST', 'ST depression with T-wave inversion': 'Sous-décalage ST avec inversion de l’onde T', 'No significant ST/T abnormality': 'Aucune anomalie ST/T significative',
 }
+const optionSw = {
+  'Regular sinus bradycardia': 'Sinus bradycardia yenye rhythm ya kawaida', 'Regular sinus rhythm': 'Sinus rhythm ya kawaida', 'Regular sinus tachycardia': 'Sinus tachycardia yenye rhythm ya kawaida',
+  'Left axis deviation': 'Left axis deviation', 'Normal axis': 'Axis ya kawaida', 'Right axis deviation': 'Right axis deviation',
+  'Absent': 'Hayapo', 'Present, sinus morphology, one before each QRS': 'Yapo, sinus morphology, moja kabla ya kila QRS', 'Present but unrelated to QRS complexes': 'Yapo lakini hayahusiani na QRS complexes',
+  'ST elevation': 'ST elevation', 'ST depression with T-wave inversion': 'ST depression pamoja na T-wave inversion', 'No significant ST/T abnormality': 'Hakuna tatizo kubwa la ST/T',
+}
 export function localizeOption(label, language) {
   if (typeof label !== 'string') return ''
   if (language === 'en') return label
+  if (language === 'sw') return optionSw[label] || label.replace(' (short)', ' (fupi)').replace(' (prolonged)', ' (ndefu)').replace(' (narrow)', ' (nyembamba)').replace(' (wide)', ' (pana)')
   if (optionFr[label]) return optionFr[label]
-  return label.replace(' (normal)', ' (normal)').replace(' (short)', ' (court)').replace(' (prolonged)', ' (prolongé)').replace(' (narrow)', ' (fin)').replace(' (wide)', ' (large)')
+  return label.replace(' (short)', ' (court)').replace(' (prolonged)', ' (prolongé)').replace(' (narrow)', ' (fin)').replace(' (wide)', ' (large)')
 }
-export function localizeSkill(id, language) { return language === 'fr' ? skillFr[id] : ({ rate: 'Rate', rhythm: 'Rhythm', axis: 'Frontal QRS axis', pWaves: 'P waves', pr: 'PR interval', qrs: 'QRS duration', stt: 'ST/T findings' }[id] || id) }
-export function localizeDiagnosis(value, language) { return language === 'fr' ? diagnosisFr[value] || value : value }
+export function localizeSkill(id, language) { return language === 'fr' ? skillFr[id] : language === 'sw' ? skillSw[id] : ({ rate: 'Rate', rhythm: 'Rhythm', axis: 'Frontal QRS axis', pWaves: 'P waves', pr: 'PR interval', qrs: 'QRS duration', stt: 'ST/T findings' }[id] || id) }
+export function localizeDiagnosis(value, language) { return language === 'fr' ? diagnosisFr[value] || value : language === 'sw' ? diagnosisSw[value] || value : value }
 
 export function localizeQuestion(caseData, question, language) {
   if (language === 'en') return question
+  if (language === 'sw') {
+    const hints = {
+      rate: 'Kwa 25 mm/s, kisanduku kikubwa kimoja ni sekunde 0.2. Hesabu visanduku vikubwa kati ya R waves, kisha tumia 300 ÷ idadi hiyo.',
+      rhythm: 'Linganisha RR intervals, kisha tafuta P wave inayofanana kabla ya kila QRS na QRS baada ya kila P wave. Ainisha mapigo mwisho.',
+      axis: 'Tumia quadrant method: angalia mwelekeo wa jumla wa QRS katika leads I na aVF.',
+      pWaves: 'Lead II kwa kawaida huonyesha sinus P waves vizuri. Kagua mwelekeo, umbo na uhusiano wake na kila QRS.',
+      pr: 'Pima kutoka mwanzo wa P wave hadi mwanzo wa QRS. Kila kisanduku kidogo ni 40 ms kwa 25 mm/s.',
+      qrs: 'Pima kutoka deflection ya kwanza ya QRS hadi mwisho wa S wave. Kila kisanduku kidogo ni 40 ms.',
+      stt: 'Tumia TP segment kama baseline. Linganisha na ST segment, kisha kagua mwelekeo wa T waves.',
+    }
+    const explanations = {
+      rate: `R waves zimetenganishwa kwa visanduku vikubwa ${caseData.rrMs / 200}: 300 ÷ ${caseData.rrMs / 200} = ${caseData.rate} bpm. RR interval iliyochorwa ni ${caseData.rrMs} ms.`,
+      rhythm: `RR intervals ni sawa na P waves chanya hutangulia kila QRS katika lead II kwa PR interval isiyobadilika. Mapigo yanaendana na ${localizeDiagnosis(caseData.diagnosis, 'sw')}.`,
+      axis: 'QRS ni chanya kwa kiasi kikubwa katika leads I na aVF. Frontal axis iliyochorwa ni takribani +60°, ndani ya kiwango cha kawaida kwa watu wazima.',
+      pWaves: 'P waves zinazofanana na chanya zinaonekana katika lead II kabla ya kila QRS; ni hasi katika aVR, kama inavyotarajiwa kwa sinus vector.',
+      pr: `Kutoka mwanzo wa P wave hadi mwanzo wa QRS kuna visanduku vidogo ${caseData.prMs / 40}: ${caseData.prMs / 40} × 40 ms = ${caseData.prMs} ms, ndani ya kiwango cha kawaida cha 120–200 ms.`,
+      qrs: `QRS iliyochorwa ina visanduku vidogo ${caseData.qrsMs / 40}: ${caseData.qrsMs / 40} × 40 ms = ${caseData.qrsMs} ms; ni nyembamba.`,
+      stt: 'ST segments zinarudi kwenye baseline iliyochorwa bila displacement. T waves ni chanya katika leads zinazotarajiwa na zimegeuka tu katika aVR.',
+    }
+    return { ...question, label: localizeSkill(question.id, language), hint: hints[question.id], explanation: explanations[question.id] }
+  }
   const hints = {
     rate: 'À 25 mm/s, un grand carreau correspond à 0,2 seconde. Comptez les grands carreaux entre deux ondes R, puis calculez 300 ÷ ce nombre.',
     rhythm: 'Comparez les intervalles RR, puis recherchez une onde P constante avant chaque QRS et un QRS après chaque onde P. Classez ensuite la fréquence.',
@@ -98,3 +149,7 @@ export function frenchExample(caseData) {
   return `Cet ECG montre un ${localizeDiagnosis(caseData.diagnosis, 'fr').toLowerCase()} à ${caseData.rate} bpm. Le rythme est régulier, avec des ondes P sinusales avant chaque QRS. L’axe est normal, l’intervalle PR mesure ${caseData.prMs} ms et le QRS est fin à ${caseData.qrsMs} ms. Il n’y a pas d’anomalie ST/T significative.`
 }
 export const frenchChecklist = ['Indiquez la fréquence et le rythme.', 'Décrivez les ondes P et leur relation avec les complexes QRS.', 'Indiquez l’axe, l’intervalle PR et la durée du QRS.', 'Décrivez les anomalies ST/T significatives ou leur absence.']
+export function swahiliExample(caseData) {
+  return `ECG hii inaonyesha ${localizeDiagnosis(caseData.diagnosis, 'sw')} kwa ${caseData.rate} bpm. Rhythm ni ya kawaida, na sinus P waves zipo kabla ya kila QRS. Axis ni ya kawaida, PR interval ni ${caseData.prMs} ms na QRS ni nyembamba kwa ${caseData.qrsMs} ms. Hakuna tatizo kubwa la ST/T.`
+}
+export const swahiliChecklist = ['Taja mapigo na rhythm.', 'Eleza P waves na uhusiano wake na QRS complexes.', 'Taja axis, PR interval na QRS duration.', 'Eleza tatizo kubwa la ST/T au kutokuwepo kwake.']

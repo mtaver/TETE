@@ -2,7 +2,7 @@ import test from 'node:test'
 import assert from 'node:assert/strict'
 import { emptyProgress, isAnswerCorrect, loadProgress, ratingChange, recordAttempt, resetProgress, saveProgress, scoreAnswers } from '../src/progress.js'
 import { CASES, validateCase } from '../src/cases.js'
-import { TOPICS, searchTopics } from '../src/topics.js'
+import { TOPICS, TOPIC_SW, searchTopics } from '../src/topics.js'
 import { FEEDBACK_FLAGS_KEY, checkInterpretation, recordFeedbackFlag } from '../src/interpretationFeedback.js'
 import { parseRoute } from '../src/navigation.js'
 import { getLearningRecommendation, getMistakeReview } from '../src/learningRecommendation.js'
@@ -206,6 +206,13 @@ test('local topic search matches names and common synonyms', () => {
   assert.deepEqual(searchTopics('fast heart rate').map((topic) => topic.id), ['sinus-tachycardia'])
   assert.deepEqual(searchTopics('bpm').map((topic) => topic.id), ['rate'])
   assert.deepEqual(searchTopics('regularity').map((topic) => topic.id), ['rhythm'])
+})
+
+test('Kiswahili topic search covers every local topic and synonym', () => {
+  assert.deepEqual(Object.keys(TOPIC_SW).sort(), TOPICS.map((topic) => topic.id).sort())
+  assert.equal(searchTopics('mapigo ya moyo ya polepole', 'sw')[0].id, 'sinus-bradycardia')
+  assert.equal(searchTopics('mapigo ya moyo ya haraka', 'sw')[0].id, 'sinus-tachycardia')
+  assert.ok(searchTopics('rhythm', 'sw').some((topic) => topic.id === 'rhythm'))
 })
 
 test('topic search handles empty and unmatched searches without invented results', () => {

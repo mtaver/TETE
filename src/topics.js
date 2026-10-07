@@ -51,7 +51,15 @@ export const TOPIC_FR = {
   rhythm: { name: 'Rythme', synonyms: ['rythme', 'régularité', 'mécanisme sinusal', 'relation p qrs'], explanation: 'Évaluez la régularité RR et vérifiez qu’une onde P sinusale constante précède chaque QRS avant de classer le rythme sinusal selon la fréquence.' },
 }
 
-export function localizeTopic(topic, language) { return language === 'fr' ? { ...topic, ...TOPIC_FR[topic.id] } : topic }
+export const TOPIC_SW = {
+  'normal-sinus-rhythm': { name: 'Normal sinus rhythm', synonyms: ['rhythm ya kawaida', 'sinus rhythm', 'ecg ya kawaida'], explanation: 'Sinus P wave hutangulia kila QRS kwa PR interval isiyobadilika; katika mfano huu wa utangulizi kwa watu wazima, mapigo ni 60–100 bpm.' },
+  'sinus-bradycardia': { name: 'Sinus bradycardia', synonyms: ['bradycardia', 'mapigo ya moyo ya polepole', 'pulse ya polepole'], explanation: 'Sinus bradycardia huhifadhi uhusiano uliopangwa wa sinus P–QRS kwa mapigo ya mtu mzima yaliyo chini ya 60 bpm kwa kawaida; muktadha wa kitabibu bado ni muhimu.' },
+  'sinus-tachycardia': { name: 'Sinus tachycardia', synonyms: ['tachycardia', 'mapigo ya moyo ya haraka', 'pulse ya haraka'], explanation: 'Sinus tachycardia huhifadhi uhusiano uliopangwa wa sinus P–QRS kwa mapigo ya mtu mzima yaliyo zaidi ya 100 bpm katika mafunzo haya ya utangulizi.' },
+  rate: { name: 'Mapigo ya moyo', synonyms: ['mapigo', 'mapigo ya moyo', 'bpm', 'pulse'], explanation: 'Kwa 25 mm/s, kisanduku kikubwa kimoja ni sekunde 0.2. Kwa rhythm ya kawaida, gawanya 300 kwa idadi ya visanduku vikubwa kati ya R waves ili kukadiria mapigo.' },
+  rhythm: { name: 'Rhythm', synonyms: ['rhythm', 'mpangilio', 'sinus mechanism', 'uhusiano wa p qrs'], explanation: 'Kagua kama RR intervals ni sawa na kama sinus P wave inayofanana hutangulia kila QRS kabla ya kutumia mapigo kuainisha sinus rhythm.' },
+}
+
+export function localizeTopic(topic, language) { return language === 'fr' ? { ...topic, ...TOPIC_FR[topic.id] } : language === 'sw' ? { ...topic, ...TOPIC_SW[topic.id] } : topic }
 
 export function searchTopics(query, language = 'en') {
   const normalized = normalize(query)

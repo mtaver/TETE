@@ -228,7 +228,8 @@ footer { margin-top: auto; border-top: 1px solid #d8ded6; padding: 25px 0 35px; 
 @media (max-width: 760px) {
   .site-header, main, footer { width: min(100% - 28px, 1120px); }
   .pwa-status { width: min(100% - 28px, 1120px); }
-  .site-header { min-height: 74px; }
+  .site-header { min-height: 74px; flex-wrap: wrap; gap: 8px 16px; padding-block: 10px; }
+  .header-actions { width: 100%; justify-content: space-between; }
   .site-header nav { gap: 14px; }
   .site-header nav a { font-size: .8rem; }
   .header-actions { gap: 10px; }

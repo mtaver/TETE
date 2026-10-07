@@ -86,11 +86,11 @@ Automation does **not** establish that the schematic looks clinically authentic,
 
 ## Translation coverage and review status
 
-The application bundles English and French learner-facing text for navigation, structured case questions and options, progressive hints, explanations, topic summaries, recommendations, progress and mistake review, PWA/status notices, and written-interpretation guidance. Stable case, question, and answer-value IDs remain language-neutral; translated labels are presentation only and are never used as the new scoring key. Existing English-label responses from older saved records remain readable.
+The application bundles English, French, and Kiswahili learner-facing text for navigation, structured case questions and options, progressive hints, explanations, topic summaries, recommendations, progress and mistake review, PWA/status notices, and written-interpretation guidance. Stable case, question, and answer-value IDs remain language-neutral; translated labels are presentation only and are never used as the scoring key. Existing English-label responses from older saved records remain readable.
 
 Automated checks can confirm that every structured answer has a stable ID, that the same IDs are used in either interface language, and that the production bundle contains both local dictionaries. They cannot establish translation accuracy, clinical nuance, readability for francophone learners, or equivalence of teaching effect.
 
-French translation approval by a bilingual ECG educator: **Not yet reviewed**. The case-level expert statuses above also remain **Not yet reviewed**. The English deterministic prose checker must not be treated as understanding French; in French mode it is intentionally replaced by a translated self-review checklist and case-specific example. Source titles and URLs are preserved as published. No curriculum alignment or institutional approval is claimed.
+French translation approval by a bilingual ECG educator: **Not yet reviewed**. Kiswahili status: **Provisional translation — not yet reviewed by a bilingual ECG educator**. The case-level expert statuses above also remain **Not yet reviewed**. Technical ECG terms are intentionally retained where necessary rather than assigning an uncertain Kiswahili equivalent. The English deterministic prose checker must not be treated as understanding French or Kiswahili; those modes intentionally provide translated self-review checklists and case-specific examples instead. Source titles and URLs are preserved as published. No curriculum alignment or institutional approval is claimed.
 
 ## Expert sign-off template
 
