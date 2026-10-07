@@ -17,6 +17,7 @@
     "workbox-window": "^7.4.1"
   },
   "devDependencies": {
+    "ical.js": "^2.2.1",
     "vite-plugin-pwa": "^2.0.0"
   }
 }

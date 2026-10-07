@@ -7,6 +7,8 @@ import { FEEDBACK_FLAGS_KEY, checkInterpretation, recordFeedbackFlag } from '../
 import { parseRoute } from '../src/navigation.js'
 import { getLearningRecommendation, getMistakeReview } from '../src/learningRecommendation.js'
 import { MAX_BACKUP_BYTES, parseProgressBackup, serializeProgressBackup } from '../src/progressBackup.js'
+import ICAL from 'ical.js'
+import { createReminderIcs, reminderLink } from '../src/calendarReminder.js'
 
 const caseId = 'normal-sinus-rhythm-01'
 const questions = [
@@ -15,6 +17,53 @@ const questions = [
 ]
 const correct = Object.fromEntries(questions.map((q) => [q.id, q.answer]))
 const attempt = (overrides = {}) => ({ id: 'attempt-1', caseId, mode: 'rated', percentage: 100, correctness: {}, createdAt: '2026-10-05T00:00:00.000Z', ...overrides })
+
+const reminderInput = (overrides = {}) => ({ stableId: 'rate', title: 'Practise heart-rate interpretation.', invitation: 'Take five minutes to practise this ECG skill with Tete.', date: '2027-03-13', time: '09:30', frequency: 'once', endDate: '', url: reminderLink({ caseId, skillId: 'rate' }), ...overrides })
+const parsedEvent = (ics) => new ICAL.Event(new ICAL.Component(ICAL.parse(ics)).getFirstSubcomponent('vevent'))
+
+test('calendar reminders have safe titles, practice-only deep links, alerts, and five-minute duration', () => {
+  const result = createReminderIcs(reminderInput(), { now: new Date('2026-01-01T00:00:00Z'), timeZone: 'America/New_York', uid: 'test-1@tete.local' })
+  assert.equal(result.ok, true)
+  const event = parsedEvent(result.ics)
+  assert.equal(event.summary, 'Tete: Practise heart-rate interpretation.')
+  assert.equal(event.duration.toSeconds(), 300)
+  assert.match(event.description, /Take five minutes/)
+  assert.match(event.description, /#case\/normal-sinus-rhythm-01\/learning\/rate/)
+  assert.equal(new ICAL.Component(ICAL.parse(result.ics)).getFirstSubcomponent('vevent').getAllSubcomponents('valarm').length, 1)
+  assert.doesNotMatch(result.ics, /score|mistake|interpretation history/i)
+})
+
+test('calendar reminders support once, bounded daily and weekly, and exactly ten daily occurrences', () => {
+  const now = new Date('2026-01-01T00:00:00Z')
+  const once = createReminderIcs(reminderInput(), { now, uid: 'once@tete.local' })
+  assert.equal(parsedEvent(once.ics).component.getFirstPropertyValue('rrule'), null)
+  for (const frequency of ['daily', 'weekly']) {
+    const result = createReminderIcs(reminderInput({ frequency, endDate: '2027-04-30' }), { now, uid: `${frequency}@tete.local` })
+    assert.equal(result.ok, true)
+    assert.match(result.ics, new RegExp(`RRULE:FREQ=${frequency.toUpperCase()};UNTIL=`))
+  }
+  const ten = createReminderIcs(reminderInput({ frequency: 'daily-10' }), { now, timeZone: 'America/New_York', uid: 'ten@tete.local' })
+  const iterator = parsedEvent(ten.ics).iterator(); const occurrences = []
+  for (let next = iterator.next(); next && occurrences.length < 11; next = iterator.next()) occurrences.push(next)
+  assert.equal(occurrences.length, 10)
+  assert.ok(occurrences.every((value) => value.hour === 9 && value.minute === 30))
+  assert.match(ten.ics, /X-WR-TIMEZONE:America\/New_York/)
+})
+
+test('calendar output uses CRLF, escaping, folding, unique ids, and rejects invalid input without changing progress', () => {
+  const progress = recordAttempt(emptyProgress(), attempt()).progress; const before = JSON.stringify(progress)
+  const a = createReminderIcs(reminderInput({ invitation: `Practice, review; and use \\ notes ${'x'.repeat(100)}` }), { now: new Date('2026-01-01T00:00:00Z') })
+  const b = createReminderIcs(reminderInput(), { now: new Date('2026-01-01T00:00:00Z') })
+  assert.notEqual(a.uid, b.uid)
+  assert.ok(a.ics.split('\r\n').every((line) => new TextEncoder().encode(line).length <= 75))
+  assert.equal(a.ics.replaceAll('\r\n', '').includes('\n'), false)
+  assert.match(a.ics, /Practice\\, review\\; and use \\\\ notes/)
+  assert.equal(createReminderIcs(reminderInput({ date: '2020-01-01' })).code, 'futureRequired')
+  assert.equal(createReminderIcs(reminderInput({ time: '25:00' })).code, 'invalidDateTime')
+  assert.equal(createReminderIcs(reminderInput({ frequency: 'daily', endDate: '' })).code, 'invalidEndDate')
+  assert.equal(createReminderIcs(reminderInput({ stableId: 'unknown' })).code, 'invalidTarget')
+  assert.equal(JSON.stringify(progress), before)
+})
 
 test('stable answer ids score identically to legacy English labels', () => {
   for (const caseData of CASES) {
@@ -68,6 +117,8 @@ test('navigation separates practice modes and preserves legacy entry links', () 
   assert.deepEqual(parseRoute('#learning', caseIds), { view: 'learning' })
   assert.deepEqual(parseRoute('#assessment', caseIds), { view: 'assessment' })
   assert.deepEqual(parseRoute('#progress', caseIds), { view: 'progress' })
+  assert.deepEqual(parseRoute('#learning/topic/rate', caseIds, TOPICS.map((topic) => topic.id)), { view: 'learning', topicId: 'rate' })
+  assert.deepEqual(parseRoute('#learning/topic/not-a-topic', caseIds, TOPICS.map((topic) => topic.id)), { view: 'home' })
   assert.deepEqual(parseRoute(`#case/${caseId}/learning`, caseIds), { view: 'case', caseId, mode: 'learning', focusSkill: null })
   assert.deepEqual(parseRoute(`#case/${caseId}/assessment`, caseIds), { view: 'case', caseId, mode: 'assessment', focusSkill: null })
   assert.deepEqual(parseRoute(`#case/${caseId}/learning/rate`, caseIds), { view: 'case', caseId, mode: 'learning', focusSkill: 'rate' })

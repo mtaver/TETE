@@ -43,6 +43,14 @@ Search is deterministic and local—there is no internet search or AI generation
 
 Each of the five bundled topics now opens with a concise overview and learning objectives. Accessible expandable sections cover recognition features and measurements, a sequential interpretation method, common errors and distinctions, and a worked example tied to one of the six existing schematic cases. A recap, case-specific Learning Mode buttons, and claim-supporting references follow each lesson. English, French, and Kiswahili lesson content is bundled for offline use; French and Kiswahili translations remain provisional and have not received bilingual ECG educator review.
 
+## Optional calendar reminders
+
+Topic lessons and the **Your next step** card include a collapsed **Remind me to practise this** control. Choose a future local date and time, then select once, daily, weekly, or daily for exactly 10 days. Daily and weekly reminders require an inclusive end date. Tete downloads a standards-based `.ics` file containing a five-minute event and one alert at the event start. Import that file into a calendar application to schedule it; downloading alone does not add anything to a calendar.
+
+Recurring events use floating local calendar time so the selected wall-clock time remains the same across daylight-saving changes in the calendar where the file is imported. The originating IANA timezone is included as metadata, but importing the file in a different timezone intentionally adopts that calendar’s local time. Calendar behavior and alerts depend on the receiving application. Tete cannot detect missed events, remove imported reminders, or automatically stop them when practice resumes; remove remaining events in the calendar if they are no longer wanted.
+
+Reminder files contain only a stable topic or skill ID, a short practice invitation, and a Learning Mode deep link. They never contain scores, mistakes, written interpretations, or progress history, and creating, downloading, missing, or dismissing a reminder cannot affect scoring or rating eligibility. Generation is entirely local and remains available offline after the app is cached. English, French, and Kiswahili reminder controls and limitations are bundled in the application.
+
 The project does not include accounts, cloud sync, uploads, live AI, or diagnoses beyond these three sinus-rate categories.
 
 ## Written interpretation feedback

@@ -118,6 +118,7 @@ h2 { font-size: clamp(2.5rem, 5vw, 4.2rem); }
 .next-step h2 { font-size: clamp(1.9rem, 4vw, 3rem); }
 .next-step p { max-width: 680px; color: #526761; line-height: 1.6; }
 .next-step > a { color: #145c50; font-weight: 700; text-align: center; text-underline-offset: 4px; }
+.next-step > .reminder-form { grid-column: 1 / -1; }
 .review-label { padding: 9px 12px; border-left: 4px solid #b26b32; background: #fff3e3; color: #754820 !important; font-size: .84rem; font-weight: 750; line-height: 1.45; }
 .focus-instruction { margin: 0 0 28px; padding: 22px 24px; border-left: 5px solid #2b776a; border-radius: 10px; background: #eaf3ef; }
 .focus-instruction .kicker { margin: 0 0 7px; }
@@ -149,6 +150,15 @@ h2 { font-size: clamp(2.5rem, 5vw, 4.2rem); }
 .topic-sources ul { margin: 8px 0; padding-left: 22px; }
 .topic-sources small { color: #60736e; }
 .topic-actions { display: flex; flex-wrap: wrap; gap: 10px; }
+.reminder-toggle { display: inline-block; margin: 12px 0; font-weight: 750; }
+.reminder-form { margin: 18px 0; padding: 20px; border: 1px solid #b9ccc4; border-radius: 12px; background: #f8fbf9; }
+.reminder-form h4 { margin: 0 0 10px; color: #103f36; font-size: 1.15rem; }
+.reminder-form p { color: #526761; line-height: 1.5; }
+.reminder-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+.reminder-grid label { display: grid; gap: 6px; color: #294a43; font-weight: 700; }
+.reminder-grid input, .reminder-grid select { min-width: 0; width: 100%; padding: 11px 12px; border: 1px solid #879b94; border-radius: 8px; background: #fff; color: #17352f; font: inherit; }
+.reminder-grid input:focus-visible, .reminder-grid select:focus-visible { outline: 3px solid #d57838; outline-offset: 2px; }
+.reminder-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
 .no-match { padding: 14px 16px; border-left: 3px solid #b26b32; background: #fff7eb; color: #6c4a2f; }
 .guided-browser > p, .assessment-library > p:not(.kicker) { color: #60736e; line-height: 1.6; max-width: 720px; }
 .skill-filter { display: inline-flex; align-items: center; gap: 12px; margin: 20px 0 34px; font-weight: 700; }
@@ -240,6 +250,7 @@ h2 { font-size: clamp(2.5rem, 5vw, 4.2rem); }
 footer { margin-top: auto; border-top: 1px solid #d8ded6; padding: 25px 0 35px; color: #526761; font-size: .85rem; }
 .app-version { white-space: nowrap; }
 @media (max-width: 760px) {
+  .reminder-grid { grid-template-columns: 1fr; }
   .site-header, main, footer { width: min(100% - 28px, 1120px); }
   .pwa-status { width: min(100% - 28px, 1120px); }
   .site-header { min-height: 74px; flex-wrap: wrap; gap: 8px 16px; padding-block: 10px; }

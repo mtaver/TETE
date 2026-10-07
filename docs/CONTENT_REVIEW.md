@@ -90,6 +90,8 @@ The five existing topics—normal sinus rhythm, sinus bradycardia, sinus tachyca
 
 Automated tests check that every topic has each lesson section in English, French, and Kiswahili; that every linked case ID exists; that every source key resolves; and that worked examples identify an existing case. They do not establish pedagogical effectiveness, clinical completeness, translation quality, or source sufficiency. All topic lessons remain **Not yet reviewed** by an ECG educator. External references require internet access; the complete lesson text and practice links are bundled offline.
 
+Optional `.ics` reminders link only to topic lessons or focused Learning Mode routes. Reminder titles use the displayed topic or skill, while stable IDs remain in non-executable calendar metadata. The files deliberately exclude learner answers and progress. Calendar import, recurrence presentation, timezone interpretation, and alert delivery remain the responsibility of the learner’s calendar application and are not evidence of learning engagement.
+
 ## Translation coverage and review status
 
 The application bundles English, French, and Kiswahili learner-facing text for navigation, structured case questions and options, progressive hints, explanations, topic summaries, recommendations, progress and mistake review, PWA/status notices, and written-interpretation guidance. Stable case, question, and answer-value IDs remain language-neutral; translated labels are presentation only and are never used as the scoring key. Existing English-label responses from older saved records remain readable.
