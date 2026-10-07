@@ -6,6 +6,7 @@ import { localizeTopic, searchTopics } from './topics.js'
 import { checkInterpretation, recordFeedbackFlag } from './interpretationFeedback.js'
 import { parseRoute } from './navigation.js'
 import { focusedInstruction as baseFocusedInstruction, getLearningRecommendation, getMistakeReview } from './learningRecommendation.js'
+import { MAX_BACKUP_BYTES, parseProgressBackup, serializeProgressBackup } from './progressBackup.js'
 import PwaStatus from './PwaStatus.jsx'
 import { I18nProvider, LANGUAGE_KEY, frenchChecklist, frenchExample, swahiliChecklist, swahiliExample, localizeDiagnosis, localizeOption, localizeQuestion, localizeSkill, translate, useI18n } from './i18n.jsx'
 
@@ -67,6 +68,40 @@ function Sources({ caseData }) {
   const summaryFr = { standards: 'L’étalonnage standard permet de comparer le temps et le voltage : à 25 mm/s, chaque petit carreau horizontal vaut 40 ms et 10 mm verticalement représentent 1 mV.', definitions: 'Un mécanisme sinusal présente une activation atriale constante. Chez l’adulte, la bradycardie sinusale est conventionnellement inférieure à 60 bpm, selon le contexte clinique.', fundamentals: 'Mesurez le PR du début de l’onde P au début du QRS, et le QRS de sa première à sa dernière déflexion.', sinusRhythms: 'La bradycardie sinusale, le rythme sinusal normal et la tachycardie sinusale partagent une relation P–QRS sinusale organisée ; leur distinction introductive repose sur la fréquence.' }
   const summarySw = { standards: 'Calibration ya kawaida huruhusu kulinganisha muda na voltage: kwa 25 mm/s, kila kisanduku kidogo cha mlalo ni 40 ms na 10 mm kwa wima ni 1 mV.', definitions: 'Sinus mechanism ina atrial activation inayofanana. Kwa watu wazima, sinus bradycardia kwa kawaida ni chini ya 60 bpm, kulingana na muktadha wa kitabibu.', fundamentals: 'Pima PR kutoka mwanzo wa P wave hadi mwanzo wa QRS, na QRS kutoka deflection yake ya kwanza hadi ya mwisho.', sinusRhythms: 'Sinus bradycardia, normal sinus rhythm na sinus tachycardia zote zina uhusiano uliopangwa wa sinus P–QRS; utangulizi huu unazitofautisha kwa mapigo.' }
   return <aside className="sources" aria-labelledby="sources-title"><h3 id="sources-title">{languageText(language, 'Offline learning summaries and references', 'Résumés pédagogiques hors ligne et références', 'Muhtasari wa kujifunza bila intaneti na marejeo')}</h3><p className="notice">{languageText(language, 'The summaries below stay available offline. External source links require an internet connection.', 'Les résumés restent disponibles hors ligne. Les liens externes nécessitent internet.', 'Muhtasari huu unapatikana bila intaneti. Viungo vya nje vinahitaji intaneti.')}</p><ul>{sourceKeys.map((key) => { const source = CASE_SOURCES[key]; return <li key={key}><p>{language === 'fr' ? summaryFr[key] : language === 'sw' ? summarySw[key] : source.summary}</p><a href={source.url} target="_blank" rel="noreferrer">Source: {source.title} ({t('sourceInternet')})</a> — {languageText(language, source.note, 'Référence pédagogique.', 'Rejeo la kielimu.')}</li> })}</ul><p>{languageText(language, 'Rate thresholds are introductory adult conventions and require clinical context. These schematic cases teach pattern recognition, not diagnosis or management.', 'Les seuils de fréquence sont des conventions adultes introductives qui nécessitent un contexte clinique. Ces cas schématiques enseignent la reconnaissance de motifs, et non le diagnostic ou la prise en charge.', 'Viwango vya mapigo ni kanuni za utangulizi kwa watu wazima na vinahitaji muktadha wa kitabibu. Kesi hizi za michoro zinafundisha kutambua mifumo, si utambuzi au matibabu.')}</p></aside>
+}
+
+function downloadProgressBackup(progress) {
+  const blob = new Blob([serializeProgressBackup(progress)], { type: 'application/json' })
+  const url = URL.createObjectURL(blob)
+  const link = document.createElement('a')
+  link.href = url
+  link.download = `tete-progress-${new Date().toISOString().slice(0, 10)}.json`
+  link.click()
+  URL.revokeObjectURL(url)
+}
+
+function BackupRestorePanel({ progress, onRestore }) {
+  const { t } = useI18n()
+  const [pending, setPending] = useState(null)
+  const [message, setMessage] = useState('')
+  const [messageError, setMessageError] = useState(false)
+  const fileInput = useRef(null)
+  const chooseFile = async (event) => {
+    const file = event.target.files?.[0]
+    setPending(null)
+    if (!file) return
+    if (file.size > MAX_BACKUP_BYTES) { setMessage('fileTooLarge'); setMessageError(true); event.target.value = ''; return }
+    try {
+      const parsed = parseProgressBackup(await file.text())
+      if (!parsed.ok) { setMessage(parsed.code); setMessageError(true) } else { setPending(parsed); setMessage('restoreReady'); setMessageError(false) }
+    } catch { setMessage('restoreReadFailed'); setMessageError(true) }
+    event.target.value = ''
+  }
+  const confirmRestore = () => {
+    if (!pending) return
+    if (onRestore(pending.progress)) { setPending(null); setMessage('restoreSuccess'); setMessageError(false) } else { setMessage('restoreWriteFailed'); setMessageError(true) }
+  }
+  return <section className="backup-panel" aria-labelledby="backup-title"><h3 id="backup-title">{t('backupTitle')}</h3><p>{t('backupPrivacy')}</p><div className="backup-actions"><button type="button" className="secondary-button" onClick={() => downloadProgressBackup(progress)}>{t('backupProgress')}</button><button type="button" className="secondary-button" onClick={() => fileInput.current?.click()}>{t('restoreProgress')}</button><input ref={fileInput} className="visually-hidden" type="file" accept="application/json,.json" aria-label={t('restoreFileLabel')} onChange={chooseFile} /></div>{message && <p className={messageError ? 'storage-warning' : 'notice'} role={messageError ? 'alert' : 'status'}>{t(message)}</p>}{pending && <div className="restore-preview" role="group" aria-labelledby="restore-preview-title"><h4 id="restore-preview-title">{t('restorePreview')}</h4><p>{t('backupAttempts', { count: pending.progress.attempts.length })}</p><p>{t('backupRating', { rating: pending.progress.rating })}</p><p>{t('replaceWarning')}</p><div className="backup-actions"><button type="button" className="secondary-button" onClick={() => downloadProgressBackup(progress)}>{t('backupCurrentFirst')}</button><button type="button" className="danger-button" onClick={confirmRestore}>{t('confirmRestore')}</button><button type="button" className="text-button" onClick={() => { setPending(null); setMessage('') }}>{t('cancelRestore')}</button></div></div>}</section>
 }
 
 function ProgressPanel({ progress, storageMessage, onReset, onPracticeSkill }) {
@@ -218,11 +253,12 @@ function Practice({ route, navigate, onActiveAttempt }) {
   const selectCase = (id, selectedMode, selectedSkill = null) => { setSubmitted(false); setAnswers({}); setHints({}); setReasoning(''); setResultAttempt(null); setAttemptId(makeAttemptId()); navigate(`#case/${id}/${selectedMode}${selectedSkill ? `/${selectedSkill}` : ''}`) }
   const submit = (event) => { event.preventDefault(); if (submitted) return; const score = scoreAnswers(caseData.questions, answers, caseData.id); const correctness = Object.fromEntries(caseData.questions.map((question) => [question.id, isAnswerCorrect(question, answers[question.id])])); const recorded = recordAttempt(progress, { id: attemptId, caseId: caseData.id, mode, percentage: score.percentage, earned: score.earned, total: score.total, correctness, responses: { ...answers }, focusSkill, createdAt: new Date().toISOString() }); setProgress(recorded.progress); setResultAttempt(recorded.attempt); setSubmitted(true); const saved = saveProgress(storage, recorded.progress); if (!saved.ok) setStorageMessage(saved.message); window.scrollTo({ top: 0, behavior: 'smooth' }) }
   const revise = () => { setSubmitted(false); if (!focusSkill) setAttemptId(makeAttemptId()); window.scrollTo({ top: 0, behavior: 'smooth' }) }
+  const restoreFromBackup = (restoredProgress) => { const saved = saveProgress(storage, restoredProgress); if (!saved.ok) return false; setProgress(restoredProgress); setStorageMessage(''); return true }
   const reset = () => { const result = resetProgress(storage); setProgress(result.progress); setStorageMessage(result.message || 'Progress reset on this device.'); setSubmitted(false); navigate('#progress') }
   if (route.view === 'modes') return <main className="case-page"><ModeSelection recommendation={recommendation} onContinue={() => recommendation.caseId && selectCase(recommendation.caseId, 'learning', recommendation.skill)} /></main>
   if (route.view === 'learning') return <main className="case-page"><LearningLibrary progress={progress} onSelect={(id) => selectCase(id, 'learning')} /><ScoringDetails /></main>
   if (route.view === 'assessment') return <main className="case-page"><AssessmentLibrary progress={progress} onSelect={(id) => selectCase(id, 'assessment')} /><ScoringDetails /></main>
-  if (route.view === 'progress') return <main className="case-page"><a className="back-link" href="#practice"><span aria-hidden="true">←</span> {t('backModes')}</a><ProgressPanel progress={progress} storageMessage={storageMessage} onReset={reset} onPracticeSkill={(id, skill) => selectCase(id, 'learning', skill)} /><ScoringDetails /></main>
+  if (route.view === 'progress') return <main className="case-page"><a className="back-link" href="#practice"><span aria-hidden="true">←</span> {t('backModes')}</a><ProgressPanel progress={progress} storageMessage={storageMessage} onReset={reset} onPracticeSkill={(id, skill) => selectCase(id, 'learning', skill)} /><BackupRestorePanel progress={progress} onRestore={restoreFromBackup} /><ScoringDetails /></main>
   if (!caseData || !mode) return <main className="case-page"><ModeSelection recommendation={recommendation} onContinue={() => recommendation.caseId && selectCase(recommendation.caseId, 'learning', recommendation.skill)} /></main>
   const libraryHash = mode === 'guided' ? '#learning' : '#assessment'
   const modeLabel = mode === 'guided' ? t('learningMode') : t('assessmentMode')

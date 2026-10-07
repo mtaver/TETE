@@ -6,6 +6,7 @@ import { TOPICS, TOPIC_SW, searchTopics } from '../src/topics.js'
 import { FEEDBACK_FLAGS_KEY, checkInterpretation, recordFeedbackFlag } from '../src/interpretationFeedback.js'
 import { parseRoute } from '../src/navigation.js'
 import { getLearningRecommendation, getMistakeReview } from '../src/learningRecommendation.js'
+import { MAX_BACKUP_BYTES, parseProgressBackup, serializeProgressBackup } from '../src/progressBackup.js'
 
 const caseId = 'normal-sinus-rhythm-01'
 const questions = [
@@ -28,6 +29,38 @@ test('stable answer ids score identically to legacy English labels', () => {
     }
   }
 })
+
+test('progress backup round trip preserves rating eligibility and responses', () => {
+  const first = recordAttempt(emptyProgress(), attempt({ caseId: CASES[0].id, mode: 'guided', responses: { rate: CASES[0].questions[0].answerId }, correctness: { rate: true } })).progress
+  const restored = parseProgressBackup(serializeProgressBackup(first, '2026-10-07T10:00:00.000Z'))
+  assert.equal(restored.ok, true)
+  assert.deepEqual(restored.progress, first)
+  const later = recordAttempt(restored.progress, attempt({ id: 'after-restore', caseId: CASES[0].id, mode: 'rated' }))
+  assert.equal(later.attempt.rated, false)
+  assert.equal(later.progress.rating, first.rating)
+})
+
+test('progress backup accepts older valid records without stored responses', () => {
+  const older = { version: 1, rating: 600, attempts: [{ id: 'old-1', caseId: CASES[0].id, mode: 'guided', percentage: 40, correctness: { rate: false }, createdAt: '2025-01-01T00:00:00.000Z' }] }
+  const restored = parseProgressBackup(serializeProgressBackup(older))
+  assert.equal(restored.ok, true)
+  assert.equal('responses' in restored.progress.attempts[0], false)
+})
+
+test('progress backup rejects malformed, unsupported, oversized, and invalid values', () => {
+  assert.equal(parseProgressBackup('{').code, 'invalidJson')
+  assert.equal(parseProgressBackup(JSON.stringify({ format: 'other', version: 1, progress: emptyProgress() })).code, 'unsupportedBackup')
+  assert.equal(parseProgressBackup('x'.repeat(MAX_BACKUP_BYTES + 1)).code, 'fileTooLarge')
+  const unknownCase = createBackupWithAttempt({ caseId: 'not-a-case' })
+  assert.equal(parseProgressBackup(unknownCase).code, 'invalidAttempt')
+  const badAnswer = createBackupWithAttempt({ responses: { rate: '<script>alert(1)</script>' } })
+  assert.equal(parseProgressBackup(badAnswer).code, 'invalidValue')
+})
+
+function createBackupWithAttempt(overrides) {
+  const progress = { version: 1, rating: 600, attempts: [attempt({ percentage: 50, caseId: CASES[0].id, mode: 'guided', ...overrides })] }
+  return serializeProgressBackup(progress)
+}
 
 test('navigation separates practice modes and preserves legacy entry links', () => {
   const caseIds = CASES.map((item) => item.id)

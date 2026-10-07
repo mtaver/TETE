@@ -16,6 +16,11 @@ button { cursor: pointer; }
 .language-select { display: flex; align-items: center; gap: 8px; color: #294a43; font-size: .82rem; font-weight: 700; }
 .language-select select { border: 1px solid #879b94; border-radius: 8px; background: #fff; color: #17352f; padding: 8px 28px 8px 9px; }
 .translation-notice { display: inline-block; margin-left: 6px; font-weight: 650; }
+.visually-hidden { position: absolute !important; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+.backup-panel { margin-top: 24px; padding: 24px; border: 1px solid #d4ddd8; border-radius: 14px; background: #fff; }
+.backup-panel h3, .backup-panel h4 { margin-top: 0; color: #103f36; }
+.backup-actions { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+.restore-preview { margin-top: 18px; padding: 18px; border-left: 4px solid #a64233; background: #fff8f5; }
 .pwa-status { width: min(1120px, calc(100% - 40px)); margin: 12px auto 0; padding: 12px 16px; border: 1px solid #b9cec5; border-radius: 10px; background: #eaf3ef; color: #294a43; }
 .pwa-status p { margin: 0; line-height: 1.5; }
 .pwa-status > div { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
