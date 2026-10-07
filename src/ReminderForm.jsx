@@ -8,6 +8,10 @@ const copy = {
   sw: { open: 'Nikumbushe kufanya zoezi hili', date: 'Tarehe ya kuanza', time: 'Saa ya eneo lako', frequency: 'Marudio', end: 'Tarehe ya mwisho', once: 'Mara moja', daily: 'Kila siku', weekly: 'Kila wiki', ten: 'Kila siku kwa siku 10', download: 'Pakua ukumbusho wa kalenda', cancel: 'Ghairi', import: 'Ingiza faili hii kwenye kalenda yako. Alerts za ukumbusho hutegemea mipangilio ya kalenda yako.', manual: 'Kupakua hakupangi ukumbusho moja kwa moja.', starts: 'Vikumbusho huanza tarehe uliyochagua. Tete haiwezi kutambua vikumbusho vilivyokosekana au kusimamisha vilivyoingizwa unapofanya mazoezi tena.', resumed: 'Umeanza kufanya mazoezi tena? Unaweza kuondoa vikumbusho vilivyobaki kwenye kalenda yako.', neutral: 'Kukosa au kufunga ukumbusho hakubadilishi alama au rating.', success: 'Faili ya kalenda imepakuliwa. Ingiza kwenye kalenda ili kupanga ukumbusho.', invalidDateTime: 'Chagua tarehe na saa halali za eneo lako.', futureRequired: 'Chagua tarehe na saa zijazo.', invalidFrequency: 'Chagua marudio yanayokubalika.', invalidEndDate: 'Chagua tarehe ya mwisho iliyo sawa au baada ya tarehe ya kuanza.', invalidTarget: 'Lengo hili la ukumbusho halikubaliki.', downloadFailed: 'Faili ya kalenda haikuweza kupakuliwa. Hakuna kilichopangwa.' },
 }
 
+copy.en.import = 'Learning works offline. Calendar reminders depend on your calendar app. Import this file into your calendar to add the reminder.'
+copy.fr.import = 'L’apprentissage fonctionne hors ligne. Les rappels de calendrier dépendent de votre application de calendrier. Importez ce fichier dans votre calendrier pour ajouter le rappel.'
+copy.sw.import = 'Kujifunza hufanya kazi bila intaneti. Vikumbusho vya kalenda hutegemea programu yako ya kalenda. Ingiza faili hii kwenye kalenda yako ili kuongeza ukumbusho.'
+
 export default function ReminderForm({ stableId, title, url, completed = false }) {
   const { language } = useI18n(); const c = copy[language] || copy.en
   const [open, setOpen] = useState(false); const [frequency, setFrequency] = useState('once'); const [message, setMessage] = useState('')
