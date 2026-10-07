@@ -84,6 +84,14 @@ External links need internet access. Tete includes short original, attributed su
 
 Automation does **not** establish that the schematic looks clinically authentic, that every lead’s morphology is pedagogically ideal, that the answer options avoid misconceptions, that the wording is understandable, that the sources are sufficient, or that the content supports competent clinical interpretation. Those decisions require expert review.
 
+## Translation coverage and review status
+
+The application bundles English and French learner-facing text for navigation, structured case questions and options, progressive hints, explanations, topic summaries, recommendations, progress and mistake review, PWA/status notices, and written-interpretation guidance. Stable case, question, and answer-value IDs remain language-neutral; translated labels are presentation only and are never used as the new scoring key. Existing English-label responses from older saved records remain readable.
+
+Automated checks can confirm that every structured answer has a stable ID, that the same IDs are used in either interface language, and that the production bundle contains both local dictionaries. They cannot establish translation accuracy, clinical nuance, readability for francophone learners, or equivalence of teaching effect.
+
+French translation approval by a bilingual ECG educator: **Not yet reviewed**. The case-level expert statuses above also remain **Not yet reviewed**. The English deterministic prose checker must not be treated as understanding French; in French mode it is intentionally replaced by a translated self-review checklist and case-specific example. Source titles and URLs are preserved as published. No curriculum alignment or institutional approval is claimed.
+
 ## Expert sign-off template
 
 For each case, record reviewer role (not patient information), review date, waveform decision, answer-key decision, hints/explanations decision, source decision, requested changes, and final disposition. Until that record exists, the status remains **Not yet reviewed**.

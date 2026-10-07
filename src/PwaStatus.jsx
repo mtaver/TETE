@@ -1,7 +1,9 @@
 import { useEffect, useRef, useState } from 'react'
 import { registerSW } from 'virtual:pwa-register'
+import { useI18n } from './i18n.jsx'
 
 export default function PwaStatus({ activeAttempt }) {
+  const { t } = useI18n()
   const [online, setOnline] = useState(() => navigator.onLine)
   const [offlineReady, setOfflineReady] = useState(false)
   const [updateReady, setUpdateReady] = useState(false)
@@ -30,7 +32,7 @@ export default function PwaStatus({ activeAttempt }) {
   if (!updateReady && online) return null
 
   return <aside className="pwa-status" aria-live="polite">
-    {!online && <p><strong>Offline</strong> — cases, hints, feedback, and saved progress remain available.</p>}
-    {updateReady && <div><p><strong>App update available.</strong> Your local progress will be preserved.</p><button type="button" className="secondary-button" disabled={activeAttempt} onClick={() => updateRef.current?.(true)}>{activeAttempt ? 'Finish this attempt to update' : 'Apply update'}</button></div>}
+    {!online && <p><strong>{t('offline')}</strong> — {t('offlineText')}</p>}
+    {updateReady && <div><p><strong>{t('updateAvailable')}</strong> {t('updatePreserve')}</p><button type="button" className="secondary-button" disabled={activeAttempt} onClick={() => updateRef.current?.(true)}>{activeAttempt ? t('finishUpdate') : t('applyUpdate')}</button></div>}
   </aside>
 }

@@ -25,7 +25,7 @@ export function getLearningRecommendation(progress, cases = CASES) {
         recency,
         caseId: attempt.caseId,
         weight: SCORING_CONFIG.cases[attempt.caseId]?.weights?.[skill] || 0,
-        notSure: attempt.responses?.[skill] === 'Not sure',
+        notSure: attempt.responses?.[skill] === 'Not sure' || attempt.responses?.[skill] === 'not-sure',
       })
     })
   })

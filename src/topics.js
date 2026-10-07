@@ -43,12 +43,23 @@ export const TOPICS = [
 
 const normalize = (value) => value.trim().toLocaleLowerCase().replace(/[^a-z0-9]+/g, ' ').trim()
 
-export function searchTopics(query) {
+export const TOPIC_FR = {
+  'normal-sinus-rhythm': { name: 'Rythme sinusal normal', synonyms: ['rythme normal', 'rythme sinusal', 'ecg normal'], explanation: 'Une onde P sinusale précède chaque QRS avec un intervalle PR constant ; dans cet exemple adulte introductif, la fréquence est comprise entre 60 et 100 bpm.' },
+  'sinus-bradycardia': { name: 'Bradycardie sinusale', synonyms: ['bradycardie', 'fréquence cardiaque lente', 'pouls lent'], explanation: 'La bradycardie sinusale conserve une relation P–QRS sinusale organisée à une fréquence adulte conventionnellement inférieure à 60 bpm ; le contexte clinique reste indispensable.' },
+  'sinus-tachycardia': { name: 'Tachycardie sinusale', synonyms: ['tachycardie', 'fréquence cardiaque rapide', 'pouls rapide'], explanation: 'La tachycardie sinusale conserve une relation P–QRS sinusale organisée à une fréquence adulte supérieure à 100 bpm dans ce contexte pédagogique introductif.' },
+  rate: { name: 'Fréquence cardiaque', synonyms: ['fréquence', 'fréquence cardiaque', 'bpm', 'pouls'], explanation: 'À 25 mm/s, un grand carreau correspond à 0,2 seconde. Pour un rythme régulier, 300 divisé par le nombre de grands carreaux entre deux ondes R estime la fréquence.' },
+  rhythm: { name: 'Rythme', synonyms: ['rythme', 'régularité', 'mécanisme sinusal', 'relation p qrs'], explanation: 'Évaluez la régularité RR et vérifiez qu’une onde P sinusale constante précède chaque QRS avant de classer le rythme sinusal selon la fréquence.' },
+}
+
+export function localizeTopic(topic, language) { return language === 'fr' ? { ...topic, ...TOPIC_FR[topic.id] } : topic }
+
+export function searchTopics(query, language = 'en') {
   const normalized = normalize(query)
   if (!normalized) return []
   const terms = normalized.split(' ')
   return TOPICS.filter((topic) => {
-    const searchable = normalize([topic.name, ...topic.synonyms].join(' '))
+    const localized = localizeTopic(topic, language)
+    const searchable = normalize([localized.name, ...localized.synonyms, topic.name, ...topic.synonyms].join(' '))
     return searchable.includes(normalized) || terms.every((term) => searchable.includes(term))
   })
 }

@@ -12,7 +12,12 @@ export const leadMorphology = {
   V4: [0.13, -0.05, 0.9, -0.25, 0.3], V5: [0.12, -0.04, 1.0, -0.14, 0.3], V6: [0.1, -0.03, 0.82, -0.08, 0.25],
 }
 
-const sharedQuestions = ({ rate, rhythmAnswer, rateOptions, rateExplanation, prMs = 160, prOptions = ['80 ms (short)', '160 ms (normal)', '240 ms (prolonged)'], qrsMs = 80, qrsOptions = ['80 ms (narrow)', '120 ms (wide)', '160 ms (wide)'] }) => [
+const addAnswerIds = (questions) => questions.map((question) => {
+  const optionIds = question.options.map((_, index) => `${question.id}-${index + 1}`)
+  return { ...question, optionIds, answerId: optionIds[question.options.indexOf(question.answer)] }
+})
+
+const sharedQuestions = ({ rate, rhythmAnswer, rateOptions, rateExplanation, prMs = 160, prOptions = ['80 ms (short)', '160 ms (normal)', '240 ms (prolonged)'], qrsMs = 80, qrsOptions = ['80 ms (narrow)', '120 ms (wide)', '160 ms (wide)'] }) => addAnswerIds([
   { id: 'rate', label: 'Rate', answer: `${rate} bpm`, options: rateOptions, hint: 'At 25 mm/s, one large box is 0.2 seconds. Count the large boxes between R waves, then use 300 ÷ that count.', explanation: rateExplanation, resource: 'sinusRhythms' },
   { id: 'rhythm', label: 'Rhythm', answer: rhythmAnswer, options: ['Regular sinus bradycardia', 'Regular sinus rhythm', 'Regular sinus tachycardia'], hint: 'Compare consecutive RR intervals, then look for a consistent P wave before every QRS and a QRS after every P wave. Classify the rate last.', explanation: `RR intervals are equal and upright P waves precede every QRS in lead II with a fixed PR interval. The rate makes this ${rhythmAnswer.toLowerCase()}.`, resource: 'definitions' },
   { id: 'axis', label: 'Frontal QRS axis', answer: 'Normal axis', options: ['Left axis deviation', 'Normal axis', 'Right axis deviation'], hint: 'Use the quadrant method: inspect the net QRS direction in leads I and aVF.', explanation: 'The QRS is predominantly positive in both lead I and aVF. The modeled mean frontal axis is approximately +60°, within the adult normal range.', resource: 'standards' },
@@ -20,7 +25,7 @@ const sharedQuestions = ({ rate, rhythmAnswer, rateOptions, rateExplanation, prM
   { id: 'pr', label: 'PR interval', answer: `${prMs} ms (normal)`, options: prOptions, hint: 'Measure from the start of the P wave to the start of the QRS. Each small box is 40 ms at 25 mm/s.', explanation: `The P onset to QRS onset spans ${prMs / 40} small boxes: ${prMs / 40} × 40 ms = ${prMs} ms, within the commonly used 120–200 ms range.`, resource: 'fundamentals' },
   { id: 'qrs', label: 'QRS duration', answer: `${qrsMs} ms (narrow)`, options: qrsOptions, hint: 'Measure from the first QRS deflection to the end of the S wave. Each small box represents 40 ms.', explanation: `The generated QRS spans ${qrsMs / 40} small boxes: ${qrsMs / 40} × 40 ms = ${qrsMs} ms, which is narrow.`, resource: 'fundamentals' },
   { id: 'stt', label: 'ST/T findings', answer: 'No significant ST/T abnormality', options: ['ST elevation', 'ST depression with T-wave inversion', 'No significant ST/T abnormality'], hint: 'Use the TP segment as the baseline. Compare it with the ST segment, then inspect T-wave direction in leads with upright QRS complexes.', explanation: 'ST segments return to the modeled baseline without displacement. T waves are upright in the expected leads and inverted only in aVR.', resource: 'fundamentals' },
-]
+])
 
 export const CASES = [
   {

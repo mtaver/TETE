@@ -1,6 +1,7 @@
 import { SCORING_CONFIG } from './scoringConfig.js'
 
 export const STORAGE_KEY = 'tete-progress-v1'
+export const isAnswerCorrect = (question, value) => value === (question.answerId || question.answer) || value === question.answer
 
 export function emptyProgress() {
   return { version: 1, rating: SCORING_CONFIG.startingRating, attempts: [] }
@@ -9,7 +10,7 @@ export function emptyProgress() {
 export function scoreAnswers(questions, answers, caseId) {
   const weights = SCORING_CONFIG.cases[caseId].weights
   const total = Object.values(weights).reduce((sum, weight) => sum + weight, 0)
-  const earned = questions.reduce((sum, question) => sum + (answers[question.id] === question.answer ? weights[question.id] : 0), 0)
+  const earned = questions.reduce((sum, question) => sum + (isAnswerCorrect(question, answers[question.id]) ? weights[question.id] : 0), 0)
   return { earned, total, percentage: Math.round((earned / total) * 100) }
 }
 

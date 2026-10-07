@@ -1,6 +1,6 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import { emptyProgress, loadProgress, ratingChange, recordAttempt, resetProgress, saveProgress, scoreAnswers } from '../src/progress.js'
+import { emptyProgress, isAnswerCorrect, loadProgress, ratingChange, recordAttempt, resetProgress, saveProgress, scoreAnswers } from '../src/progress.js'
 import { CASES, validateCase } from '../src/cases.js'
 import { TOPICS, searchTopics } from '../src/topics.js'
 import { FEEDBACK_FLAGS_KEY, checkInterpretation, recordFeedbackFlag } from '../src/interpretationFeedback.js'
@@ -14,6 +14,20 @@ const questions = [
 ]
 const correct = Object.fromEntries(questions.map((q) => [q.id, q.answer]))
 const attempt = (overrides = {}) => ({ id: 'attempt-1', caseId, mode: 'rated', percentage: 100, correctness: {}, createdAt: '2026-10-05T00:00:00.000Z', ...overrides })
+
+test('stable answer ids score identically to legacy English labels', () => {
+  for (const caseData of CASES) {
+    const idAnswers = Object.fromEntries(caseData.questions.map((question) => [question.id, question.answerId]))
+    const labelAnswers = Object.fromEntries(caseData.questions.map((question) => [question.id, question.answer]))
+    assert.equal(scoreAnswers(caseData.questions, idAnswers, caseData.id).percentage, 100)
+    assert.equal(scoreAnswers(caseData.questions, labelAnswers, caseData.id).percentage, 100)
+    for (const question of caseData.questions) {
+      assert.equal(question.optionIds.length, question.options.length)
+      assert.ok(question.optionIds.includes(question.answerId))
+      assert.equal(isAnswerCorrect(question, question.answerId), true)
+    }
+  }
+})
 
 test('navigation separates practice modes and preserves legacy entry links', () => {
   const caseIds = CASES.map((item) => item.id)
