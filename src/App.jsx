@@ -138,11 +138,17 @@ function LearningLibrary({ progress, onSelect }) {
       <div className="search-status" role="status" aria-live="polite" aria-atomic="true">{hasQuery ? topics.length ? languageText(language, `${topics.length} matching topic${topics.length === 1 ? '' : 's'}.`, `${topics.length} sujet${topics.length === 1 ? '' : 's'} correspondant${topics.length === 1 ? '' : 's'}.`, `Mada ${topics.length} zinazolingana.`) : languageText(language, `No local topic or case matches “${query.trim()}”.`, `Aucun sujet ou cas local ne correspond à « ${query.trim()} ».`, `Hakuna mada au kesi ya kifaa inayolingana na “${query.trim()}”.`) : t('searchEmpty')}</div>
       {hasQuery && topics.length > 0 && <div className="topic-results">{topics.map((topic) => {
         const localizedTopic = localizeTopic(topic, language); const topicCases = topic.caseIds.map(caseById).filter(Boolean)
-        const source = CASE_SOURCES[topic.sourceKey]
+        const section = (en, fr, sw) => languageText(language, en, fr, sw)
         return <article className="topic-card" key={topic.id}>
           <h3>{localizedTopic.name}</h3>
           <p>{localizedTopic.explanation}</p>
-          <p className="topic-source">Source: <a href={source.url} target="_blank" rel="noreferrer">{source.title} ({t('sourceInternet')})</a>. {t('offlineExplanation')}</p>
+          <p><strong>{section('Learning objectives', 'Objectifs d’apprentissage', 'Malengo ya kujifunza')}</strong></p><ul>{localizedTopic.objectives.map((item) => <li key={item}>{item}</li>)}</ul>
+          <details className="topic-lesson"><summary>{section('Key ECG features and measurements', 'Caractéristiques ECG et mesures', 'Vipengele na vipimo vya ECG')}</summary><ul>{localizedTopic.features.map((item) => <li key={item}>{item}</li>)}</ul></details>
+          <details className="topic-lesson"><summary>{section('Interpret it step by step', 'Interpréter étape par étape', 'Tafsiri hatua kwa hatua')}</summary><ol>{localizedTopic.steps.map((item) => <li key={item}>{item}</li>)}</ol></details>
+          <details className="topic-lesson"><summary>{section('Common errors and distinctions', 'Erreurs fréquentes et distinctions', 'Makosa ya kawaida na tofauti')}</summary><ul>{localizedTopic.pitfalls.map((item) => <li key={item}>{item}</li>)}</ul></details>
+          <details className="topic-lesson"><summary>{section('Worked example', 'Exemple expliqué', 'Mfano ulioelezwa')}</summary><p>{localizedTopic.workedExample}</p></details>
+          <p className="topic-recap"><strong>{section('Recap:', 'Récapitulatif :', 'Muhtasari:')}</strong> {localizedTopic.recap}</p>
+          <div className="topic-sources"><strong>{section('References', 'Références', 'Marejeo')}</strong><ul>{topic.sourceKeys.map((key) => { const source = CASE_SOURCES[key]; return <li key={key}><a href={source.url} target="_blank" rel="noreferrer">{source.title} ({t('sourceInternet')})</a></li> })}</ul><small>{t('offlineExplanation')}</small></div>
           {topicCases.length ? <div className="topic-actions">{topicCases.map((caseData) => <button type="button" className="secondary-button" key={caseData.id} onClick={() => onSelect(caseData.id)}>{languageText(language, 'Practise this topic', 'Pratiquer ce sujet', 'Fanya mazoezi ya mada hii')} · {caseData.number}</button>)}</div> : <p className="no-match">{t('noCaseTopic')}</p>}
         </article>
       })}</div>}

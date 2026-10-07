@@ -139,6 +139,15 @@ h2 { font-size: clamp(2.5rem, 5vw, 4.2rem); }
 .topic-card > p { color: #526761; line-height: 1.6; }
 .topic-card .topic-source { font-size: .86rem; }
 .topic-card a { color: #0e6254; font-weight: 700; }
+.topic-card > ul, .topic-lesson ul, .topic-lesson ol { color: #405a53; line-height: 1.6; padding-left: 24px; }
+.topic-lesson { margin-top: 12px; border: 1px solid #d4ddd8; border-radius: 10px; background: #f8fbf9; }
+.topic-lesson summary { cursor: pointer; padding: 14px 16px; color: #145c50; font-weight: 750; }
+.topic-lesson summary:focus-visible { outline: 3px solid #d57838; outline-offset: 3px; }
+.topic-lesson > :not(summary) { margin: 0 18px 16px; }
+.topic-recap { padding: 14px 16px; border-left: 3px solid #2f7b6b; background: #eef6f2; }
+.topic-sources { margin: 18px 0; color: #405a53; }
+.topic-sources ul { margin: 8px 0; padding-left: 22px; }
+.topic-sources small { color: #60736e; }
 .topic-actions { display: flex; flex-wrap: wrap; gap: 10px; }
 .no-match { padding: 14px 16px; border-left: 3px solid #b26b32; background: #fff7eb; color: #6c4a2f; }
 .guided-browser > p, .assessment-library > p:not(.kicker) { color: #60736e; line-height: 1.6; max-width: 720px; }

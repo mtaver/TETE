@@ -1,8 +1,8 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
 import { emptyProgress, isAnswerCorrect, loadProgress, ratingChange, recordAttempt, resetProgress, saveProgress, scoreAnswers } from '../src/progress.js'
-import { CASES, validateCase } from '../src/cases.js'
-import { TOPICS, TOPIC_SW, searchTopics } from '../src/topics.js'
+import { CASES, CASE_SOURCES, validateCase } from '../src/cases.js'
+import { TOPICS, TOPIC_FR, TOPIC_SW, localizeTopic, searchTopics } from '../src/topics.js'
 import { FEEDBACK_FLAGS_KEY, checkInterpretation, recordFeedbackFlag } from '../src/interpretationFeedback.js'
 import { parseRoute } from '../src/navigation.js'
 import { getLearningRecommendation, getMistakeReview } from '../src/learningRecommendation.js'
@@ -258,13 +258,28 @@ test('every topic maps only to existing cases and has offline sourced teaching t
   const caseIds = new Set(CASES.map((caseData) => caseData.id))
   for (const topic of TOPICS) {
     assert.ok(topic.explanation.length > 30)
-    assert.ok(topic.sourceKey)
+    assert.ok(topic.sourceKeys.length > 0)
+    assert.ok(topic.sourceKeys.every((key) => CASE_SOURCES[key]))
+    for (const language of ['en', 'fr', 'sw']) {
+      const localized = localizeTopic(topic, language)
+      assert.ok(localized.objectives.length >= 2)
+      assert.ok(localized.features.length >= 3)
+      assert.ok(localized.steps.length >= 4)
+      assert.ok(localized.pitfalls.length >= 3)
+      assert.ok(localized.workedExample.includes('Case') || localized.workedExample.includes('Cas'))
+      assert.ok(localized.recap.length > 20)
+    }
     assert.ok(topic.caseIds.length > 0)
     assert.ok(topic.caseIds.every((id) => caseIds.has(id)))
   }
   assert.deepEqual(TOPICS.find((topic) => topic.id === 'normal-sinus-rhythm').caseIds, ['normal-sinus-rhythm-01', 'normal-sinus-rhythm-02'])
   assert.deepEqual(TOPICS.find((topic) => topic.id === 'sinus-bradycardia').caseIds, ['sinus-bradycardia-01', 'sinus-bradycardia-02'])
   assert.deepEqual(TOPICS.find((topic) => topic.id === 'sinus-tachycardia').caseIds, ['sinus-tachycardia-01', 'sinus-tachycardia-02'])
+})
+
+test('French and Kiswahili lessons cover every topic', () => {
+  assert.deepEqual(Object.keys(TOPIC_FR).sort(), TOPICS.map((topic) => topic.id).sort())
+  assert.deepEqual(Object.keys(TOPIC_SW).sort(), TOPICS.map((topic) => topic.id).sort())
 })
 
 test('guided exposure protects only the selected new case', () => {

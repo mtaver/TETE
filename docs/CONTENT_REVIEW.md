@@ -84,6 +84,12 @@ External links need internet access. Tete includes short original, attributed su
 
 Automation does **not** establish that the schematic looks clinically authentic, that every lead’s morphology is pedagogically ideal, that the answer options avoid misconceptions, that the wording is understandable, that the sources are sufficient, or that the content supports competent clinical interpretation. Those decisions require expert review.
 
+## Topic lesson review
+
+The five existing topics—normal sinus rhythm, sinus bradycardia, sinus tachycardia, heart rate, and rhythm—include a plain-language overview, objectives, recognition features and measurements, a sequential method, common errors, a worked example, recap, relevant Learning Mode cases, and references. The examples use unchanged case measurements: Case 01 at 75 bpm, Case 02 at 50 bpm, Case 03 at 120 bpm, Case 05 at 40 bpm with a 200 ms PR, and Case 06 at 150 bpm with a 400 ms RR interval.
+
+Automated tests check that every topic has each lesson section in English, French, and Kiswahili; that every linked case ID exists; that every source key resolves; and that worked examples identify an existing case. They do not establish pedagogical effectiveness, clinical completeness, translation quality, or source sufficiency. All topic lessons remain **Not yet reviewed** by an ECG educator. External references require internet access; the complete lesson text and practice links are bundled offline.
+
 ## Translation coverage and review status
 
 The application bundles English, French, and Kiswahili learner-facing text for navigation, structured case questions and options, progressive hints, explanations, topic summaries, recommendations, progress and mistake review, PWA/status notices, and written-interpretation guidance. Stable case, question, and answer-value IDs remain language-neutral; translated labels are presentation only and are never used as the scoring key. Existing English-label responses from older saved records remain readable.

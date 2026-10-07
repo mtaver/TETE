@@ -1,66 +1,67 @@
+const allCases = ['normal-sinus-rhythm-01', 'sinus-bradycardia-01', 'sinus-tachycardia-01', 'normal-sinus-rhythm-02', 'sinus-bradycardia-02', 'sinus-tachycardia-02']
+const lesson = (id, name, synonyms, explanation, objectives, features, steps, pitfalls, workedExample, recap, sourceKeys, caseIds) => ({ id, name, synonyms, explanation, objectives, features, steps, pitfalls, workedExample, recap, sourceKeys, caseIds })
+
 export const TOPICS = [
-  {
-    id: 'normal-sinus-rhythm',
-    name: 'Normal sinus rhythm',
-    synonyms: ['normal rhythm', 'sinus rhythm', 'nsr', 'normal ecg'],
-    explanation: 'A sinus P wave precedes every QRS with a consistent PR interval; in this introductory adult example, the rate is within 60–100 bpm.',
-    sourceKey: 'sinusRhythms',
-    caseIds: ['normal-sinus-rhythm-01', 'normal-sinus-rhythm-02'],
-  },
-  {
-    id: 'sinus-bradycardia',
-    name: 'Sinus bradycardia',
-    synonyms: ['bradycardia', 'slow heart rate', 'slow pulse', 'sinus brady'],
-    explanation: 'Sinus bradycardia keeps the organized sinus P–QRS relationship at an adult rate conventionally below 60 bpm; clinical context still matters.',
-    sourceKey: 'definitions',
-    caseIds: ['sinus-bradycardia-01', 'sinus-bradycardia-02'],
-  },
-  {
-    id: 'sinus-tachycardia',
-    name: 'Sinus tachycardia',
-    synonyms: ['tachycardia', 'fast heart rate', 'rapid pulse', 'sinus tachy'],
-    explanation: 'Sinus tachycardia keeps the organized sinus P–QRS relationship at an adult rate above 100 bpm in this introductory teaching context.',
-    sourceKey: 'sinusRhythms',
-    caseIds: ['sinus-tachycardia-01', 'sinus-tachycardia-02'],
-  },
-  {
-    id: 'rate',
-    name: 'Heart rate',
-    synonyms: ['rate', 'heart rate', 'bpm', 'pulse', 'ventricular rate'],
-    explanation: 'At 25 mm/s, one large box is 0.2 seconds. For a regular rhythm, dividing 300 by the number of large boxes between R waves estimates the rate.',
-    sourceKey: 'standards',
-    caseIds: ['normal-sinus-rhythm-01', 'sinus-bradycardia-01', 'sinus-tachycardia-01', 'normal-sinus-rhythm-02', 'sinus-bradycardia-02', 'sinus-tachycardia-02'],
-  },
-  {
-    id: 'rhythm',
-    name: 'Rhythm',
-    synonyms: ['rhythm', 'regularity', 'sinus mechanism', 'p qrs relationship', 'p wave relationship'],
-    explanation: 'Assess RR regularity and whether a consistent sinus P wave precedes every QRS before using the rate to classify a sinus rhythm.',
-    sourceKey: 'fundamentals',
-    caseIds: ['normal-sinus-rhythm-01', 'sinus-bradycardia-01', 'sinus-tachycardia-01', 'normal-sinus-rhythm-02', 'sinus-bradycardia-02', 'sinus-tachycardia-02'],
-  },
+  lesson('normal-sinus-rhythm', 'Normal sinus rhythm', ['normal rhythm', 'sinus rhythm', 'nsr', 'normal ecg'],
+    'A regular rhythm that starts in the sinus node: a consistent sinus P wave precedes every QRS and the introductory adult rate is 60–100 bpm.',
+    ['Recognise an organized sinus P–QRS relationship.', 'Measure the rate before applying the normal sinus rhythm label.'],
+    ['Regular RR intervals.', 'Uniform upright P waves in lead II, with one P before every QRS.', 'Constant PR interval; introductory normal range 120–200 ms.', 'Rate 60–100 bpm in this adult learning context.'],
+    ['Confirm paper speed and calibration.', 'Compare several RR intervals for regularity.', 'Check P-wave shape and confirm one P before each QRS.', 'Measure rate, PR interval, and QRS duration.', 'Review axis and ST/T findings before naming the rhythm.'],
+    ['Do not call a tracing sinus from rate alone; confirm the P–QRS relationship.', 'A rate at a boundary still needs measurement: Case 04 is exactly 60 bpm.', '“Normal sinus rhythm” does not prove that every ECG feature or the patient is normal.'],
+    'Case 01 has four large boxes between R waves: 300 ÷ 4 = 75 bpm. RR intervals are equal, each upright lead-II P wave precedes a QRS, and the PR is fixed at 160 ms; together these support regular sinus rhythm.',
+    'Establish regularity and sinus origin first, measure the rate and intervals, then complete the rest of the ECG review.', ['sinusRhythms', 'definitions', 'fundamentals'], ['normal-sinus-rhythm-01', 'normal-sinus-rhythm-02']),
+  lesson('sinus-bradycardia', 'Sinus bradycardia', ['bradycardia', 'slow heart rate', 'slow pulse', 'sinus brady'],
+    'An organized sinus rhythm with an adult rate conventionally below 60 bpm; the ECG label describes rate and origin, not the clinical cause.',
+    ['Confirm sinus origin rather than assuming every slow rhythm is sinus.', 'Calculate a slow regular rate accurately.'],
+    ['Regular RR intervals.', 'A consistent sinus P wave before every QRS with a fixed PR interval.', 'Adult rate below 60 bpm in this introductory convention.', 'Other measurements must still be reviewed separately.'],
+    ['Confirm paper speed and calibration.', 'Check RR regularity and look for a P before every QRS.', 'Measure the slow rate using RR spacing.', 'Measure PR and QRS rather than assuming they are normal.', 'Complete axis and ST/T review, then classify the sinus rhythm by rate.'],
+    ['A slow rate alone is bradycardia, not proof of sinus bradycardia.', 'Do not count small boxes as large boxes when using the 300 method.', 'Clinical significance cannot be decided from this schematic alone; context and symptoms matter.'],
+    'Case 02 has six large boxes between R waves: 300 ÷ 6 = 50 bpm. Equal RR intervals and one consistent sinus P wave before each QRS support regular sinus bradycardia.',
+    'For a slow tracing, prove sinus origin, measure the rate, and keep ECG classification separate from clinical interpretation.', ['definitions', 'sinusRhythms', 'fundamentals'], ['sinus-bradycardia-01', 'sinus-bradycardia-02']),
+  lesson('sinus-tachycardia', 'Sinus tachycardia', ['tachycardia', 'fast heart rate', 'rapid pulse', 'sinus tachy'],
+    'An organized sinus rhythm with an adult rate above 100 bpm in this introductory teaching context.',
+    ['Find sinus P waves when complexes are closer together.', 'Measure a fast regular rate without identifying rhythm from rate alone.'],
+    ['Regular RR intervals.', 'A consistent sinus P wave before every QRS with a fixed PR interval.', 'Adult rate above 100 bpm in this introductory convention.', 'P and T waves may appear closer together as rate rises.'],
+    ['Confirm paper speed and calibration.', 'Compare RR intervals for regularity.', 'Inspect lead II carefully for a consistent P before each QRS.', 'Measure rate, PR, and QRS.', 'Review axis and ST/T findings, then classify the sinus rhythm by rate.'],
+    ['A fast rate alone does not establish sinus tachycardia.', 'Do not mistake a T wave for a P wave when waves are closer together.', 'The rhythm label does not identify why the rate is fast.'],
+    'Case 03 has 2.5 large boxes between R waves: 300 ÷ 2.5 = 120 bpm. Equal RR intervals and a consistent lead-II P wave before every QRS support regular sinus tachycardia.',
+    'At faster rates, establish regularity, find the P–QRS relationship, then calculate the rate.', ['sinusRhythms', 'definitions', 'fundamentals'], ['sinus-tachycardia-01', 'sinus-tachycardia-02']),
+  lesson('rate', 'Heart rate', ['rate', 'heart rate', 'bpm', 'pulse', 'ventricular rate'],
+    'Rate is the number of cardiac cycles per minute. On a regular ECG recorded at 25 mm/s, RR spacing provides a quick estimate.',
+    ['Check paper speed before measuring.', 'Use large-box spacing to calculate the rate of a regular rhythm.'],
+    ['At 25 mm/s, one small box is 0.04 seconds and one large box is 0.20 seconds.', 'For a regular rhythm, rate ≈ 300 ÷ large boxes between adjacent R waves.', 'Use more than one RR interval to confirm regular spacing.'],
+    ['Read the printed paper speed.', 'Confirm that several RR intervals are equal.', 'Count large boxes from one R wave to the next.', 'Divide 300 by that count and report bpm.', 'Check that the result agrees with the visual spacing.'],
+    ['The 300 method assumes 25 mm/s and a regular rhythm.', 'Count R-to-R, not P-to-P or the width of one QRS.', 'Half-box spacing matters: 2.5 large boxes gives 120 bpm.'],
+    'In Case 06, adjacent R waves are two large boxes apart: 300 ÷ 2 = 150 bpm. Its 400 ms RR interval also gives 60,000 ÷ 400 = 150 bpm.',
+    'Check speed and regularity, measure R-to-R spacing, calculate, and sanity-check the result.', ['standards', 'fundamentals'], allCases),
+  lesson('rhythm', 'Rhythm', ['rhythm', 'regularity', 'sinus mechanism', 'p qrs relationship', 'p wave relationship'],
+    'Rhythm describes the timing and electrical relationship of beats. Sinus rhythm requires more than regular RR intervals.',
+    ['Separate regularity from rhythm origin.', 'Use P waves and their QRS relationship before classifying by rate.'],
+    ['Compare several RR intervals.', 'Sinus P waves are consistent and upright in lead II in these cases.', 'Each P is followed by a QRS, each QRS is preceded by a P, and PR is fixed.', 'Rate distinguishes the three sinus rhythms in this library.'],
+    ['Compare RR intervals.', 'Find P waves and compare their shape.', 'Check one-to-one P–QRS conduction and PR consistency.', 'Measure the rate.', 'Combine origin, regularity, and rate into the rhythm label.'],
+    ['Regular does not automatically mean sinus.', 'Visible P waves are not enough if they are unrelated to QRS complexes.', 'Do not classify normal, slow, or fast until rate is measured.'],
+    'Case 05 is regular, has one uniform lead-II P before each QRS, and a fixed 200 ms PR. Its rate is 40 bpm, so the answer is regular sinus bradycardia.',
+    'Describe rhythm in order: regularity, P-wave morphology, P–QRS relationship, PR consistency, then rate class.', ['fundamentals', 'definitions', 'sinusRhythms'], allCases),
 ]
 
-const normalize = (value) => value.trim().toLocaleLowerCase().replace(/[^a-z0-9]+/g, ' ').trim()
-
 export const TOPIC_FR = {
-  'normal-sinus-rhythm': { name: 'Rythme sinusal normal', synonyms: ['rythme normal', 'rythme sinusal', 'ecg normal'], explanation: 'Une onde P sinusale précède chaque QRS avec un intervalle PR constant ; dans cet exemple adulte introductif, la fréquence est comprise entre 60 et 100 bpm.' },
-  'sinus-bradycardia': { name: 'Bradycardie sinusale', synonyms: ['bradycardie', 'fréquence cardiaque lente', 'pouls lent'], explanation: 'La bradycardie sinusale conserve une relation P–QRS sinusale organisée à une fréquence adulte conventionnellement inférieure à 60 bpm ; le contexte clinique reste indispensable.' },
-  'sinus-tachycardia': { name: 'Tachycardie sinusale', synonyms: ['tachycardie', 'fréquence cardiaque rapide', 'pouls rapide'], explanation: 'La tachycardie sinusale conserve une relation P–QRS sinusale organisée à une fréquence adulte supérieure à 100 bpm dans ce contexte pédagogique introductif.' },
-  rate: { name: 'Fréquence cardiaque', synonyms: ['fréquence', 'fréquence cardiaque', 'bpm', 'pouls'], explanation: 'À 25 mm/s, un grand carreau correspond à 0,2 seconde. Pour un rythme régulier, 300 divisé par le nombre de grands carreaux entre deux ondes R estime la fréquence.' },
-  rhythm: { name: 'Rythme', synonyms: ['rythme', 'régularité', 'mécanisme sinusal', 'relation p qrs'], explanation: 'Évaluez la régularité RR et vérifiez qu’une onde P sinusale constante précède chaque QRS avant de classer le rythme sinusal selon la fréquence.' },
+  'normal-sinus-rhythm': { name: 'Rythme sinusal normal', synonyms: ['rythme normal', 'rythme sinusal', 'ecg normal'], explanation: 'Rythme régulier provenant du nœud sinusal : une P sinusale constante précède chaque QRS et la fréquence adulte introductive est de 60–100 bpm.', objectives: ['Reconnaître une relation P–QRS sinusale organisée.', 'Mesurer la fréquence avant de nommer le rythme.'], features: ['RR réguliers.', 'P uniformes et positives en DII, une avant chaque QRS.', 'PR constant ; plage introductive 120–200 ms.', 'Fréquence 60–100 bpm.'], steps: ['Vérifier vitesse et étalonnage.', 'Comparer plusieurs RR.', 'Contrôler la forme des P et une P avant chaque QRS.', 'Mesurer fréquence, PR et QRS.', 'Examiner axe et ST/T avant de nommer le rythme.'], pitfalls: ['La fréquence seule ne prouve pas un rythme sinusal.', 'Mesurer les limites : le Cas 04 est exactement à 60 bpm.', 'Ce libellé ne prouve pas que tout l’ECG ou le patient est normal.'], workedExample: 'Cas 01 : quatre grands carreaux entre R donnent 300 ÷ 4 = 75 bpm. RR égaux, P positive avant chaque QRS et PR fixe à 160 ms soutiennent un rythme sinusal régulier.', recap: 'Établissez régularité et origine sinusale, mesurez fréquence et intervalles, puis terminez la lecture.' },
+  'sinus-bradycardia': { name: 'Bradycardie sinusale', synonyms: ['bradycardie', 'fréquence cardiaque lente', 'pouls lent'], explanation: 'Rythme sinusal organisé à moins de 60 bpm chez l’adulte selon cette convention ; le libellé ne précise pas la cause.', objectives: ['Confirmer l’origine sinusale.', 'Calculer précisément une fréquence lente régulière.'], features: ['RR réguliers.', 'P sinusale avant chaque QRS avec PR fixe.', 'Fréquence adulte inférieure à 60 bpm.', 'Examiner séparément les autres mesures.'], steps: ['Vérifier vitesse et étalonnage.', 'Contrôler RR et P–QRS.', 'Mesurer la fréquence par l’espacement RR.', 'Mesurer PR et QRS.', 'Examiner axe et ST/T puis classer.'], pitfalls: ['Une fréquence lente seule ne prouve pas une origine sinusale.', 'Ne pas confondre petits et grands carreaux.', 'La portée clinique exige contexte et symptômes.'], workedExample: 'Cas 02 : six grands carreaux donnent 300 ÷ 6 = 50 bpm. RR égaux et une P sinusale avant chaque QRS soutiennent une bradycardie sinusale régulière.', recap: 'Prouvez l’origine sinusale, mesurez la fréquence et séparez classification ECG et interprétation clinique.' },
+  'sinus-tachycardia': { name: 'Tachycardie sinusale', synonyms: ['tachycardie', 'fréquence cardiaque rapide', 'pouls rapide'], explanation: 'Rythme sinusal organisé au-dessus de 100 bpm chez l’adulte dans ce contexte pédagogique.', objectives: ['Repérer les P sinusales quand les complexes sont rapprochés.', 'Mesurer une fréquence rapide sans conclure par la fréquence seule.'], features: ['RR réguliers.', 'P sinusale avant chaque QRS avec PR fixe.', 'Fréquence adulte supérieure à 100 bpm.', 'P et T peuvent être rapprochées.'], steps: ['Vérifier vitesse et étalonnage.', 'Comparer les RR.', 'Chercher attentivement les P en DII.', 'Mesurer fréquence, PR et QRS.', 'Examiner axe et ST/T puis classer.'], pitfalls: ['Une fréquence rapide seule ne prouve pas une origine sinusale.', 'Ne pas confondre T et P.', 'Le libellé n’explique pas la cause de la fréquence.'], workedExample: 'Cas 03 : 2,5 grands carreaux donnent 300 ÷ 2,5 = 120 bpm. RR égaux et P avant chaque QRS soutiennent une tachycardie sinusale régulière.', recap: 'Vérifiez régularité et relation P–QRS avant de calculer la fréquence.' },
+  rate: { name: 'Fréquence cardiaque', synonyms: ['fréquence', 'fréquence cardiaque', 'bpm', 'pouls'], explanation: 'Nombre de cycles par minute. Sur un ECG régulier à 25 mm/s, l’espacement RR donne une estimation rapide.', objectives: ['Vérifier la vitesse.', 'Calculer avec les grands carreaux.'], features: ['À 25 mm/s : petit carreau 0,04 s, grand carreau 0,20 s.', 'Fréquence ≈ 300 ÷ grands carreaux entre R.', 'Comparer plusieurs RR.'], steps: ['Lire la vitesse.', 'Confirmer des RR égaux.', 'Compter les grands carreaux R–R.', 'Diviser 300 par ce nombre.', 'Contrôler la vraisemblance.'], pitfalls: ['La méthode suppose 25 mm/s et un rythme régulier.', 'Compter R–R, pas P–P ni le QRS.', '2,5 grands carreaux donnent 120 bpm.'], workedExample: 'Cas 06 : deux grands carreaux donnent 300 ÷ 2 = 150 bpm ; 60 000 ÷ 400 ms donne aussi 150 bpm.', recap: 'Vérifiez vitesse et régularité, mesurez R–R, calculez et contrôlez.' },
+  rhythm: { name: 'Rythme', synonyms: ['rythme', 'régularité', 'mécanisme sinusal', 'relation p qrs'], explanation: 'Le rythme décrit le temps et la relation électrique des battements. Des RR réguliers ne suffisent pas.', objectives: ['Distinguer régularité et origine.', 'Utiliser P–QRS avant la classe de fréquence.'], features: ['Comparer plusieurs RR.', 'Dans ces cas, P sinusales constantes et positives en DII.', 'Une P par QRS, un QRS par P et PR fixe.', 'La fréquence distingue les trois rythmes.'], steps: ['Comparer RR.', 'Repérer et comparer P.', 'Vérifier P–QRS et PR.', 'Mesurer la fréquence.', 'Combiner origine, régularité et fréquence.'], pitfalls: ['Régulier ne signifie pas automatiquement sinusal.', 'Des P visibles ne suffisent pas si elles sont dissociées.', 'Mesurer avant de classer lent, normal ou rapide.'], workedExample: 'Cas 05 : rythme régulier, P avant chaque QRS, PR 200 ms et fréquence 40 bpm donnent une bradycardie sinusale régulière.', recap: 'Décrivez régularité, P, relation P–QRS, PR, puis classe de fréquence.' },
 }
 
 export const TOPIC_SW = {
-  'normal-sinus-rhythm': { name: 'Normal sinus rhythm', synonyms: ['rhythm ya kawaida', 'sinus rhythm', 'ecg ya kawaida'], explanation: 'Sinus P wave hutangulia kila QRS kwa PR interval isiyobadilika; katika mfano huu wa utangulizi kwa watu wazima, mapigo ni 60–100 bpm.' },
-  'sinus-bradycardia': { name: 'Sinus bradycardia', synonyms: ['bradycardia', 'mapigo ya moyo ya polepole', 'pulse ya polepole'], explanation: 'Sinus bradycardia huhifadhi uhusiano uliopangwa wa sinus P–QRS kwa mapigo ya mtu mzima yaliyo chini ya 60 bpm kwa kawaida; muktadha wa kitabibu bado ni muhimu.' },
-  'sinus-tachycardia': { name: 'Sinus tachycardia', synonyms: ['tachycardia', 'mapigo ya moyo ya haraka', 'pulse ya haraka'], explanation: 'Sinus tachycardia huhifadhi uhusiano uliopangwa wa sinus P–QRS kwa mapigo ya mtu mzima yaliyo zaidi ya 100 bpm katika mafunzo haya ya utangulizi.' },
-  rate: { name: 'Mapigo ya moyo', synonyms: ['mapigo', 'mapigo ya moyo', 'bpm', 'pulse'], explanation: 'Kwa 25 mm/s, kisanduku kikubwa kimoja ni sekunde 0.2. Kwa rhythm ya kawaida, gawanya 300 kwa idadi ya visanduku vikubwa kati ya R waves ili kukadiria mapigo.' },
-  rhythm: { name: 'Rhythm', synonyms: ['rhythm', 'mpangilio', 'sinus mechanism', 'uhusiano wa p qrs'], explanation: 'Kagua kama RR intervals ni sawa na kama sinus P wave inayofanana hutangulia kila QRS kabla ya kutumia mapigo kuainisha sinus rhythm.' },
+  'normal-sinus-rhythm': { name: 'Normal sinus rhythm', synonyms: ['rhythm ya kawaida', 'sinus rhythm', 'ecg ya kawaida'], explanation: 'Rhythm ya kawaida kutoka sinus node: sinus P wave hutangulia kila QRS na mapigo ya utangulizi kwa mtu mzima ni 60–100 bpm.', objectives: ['Tambua uhusiano wa sinus P–QRS.', 'Pima mapigo kabla ya kutaja rhythm.'], features: ['RR intervals ni sawa.', 'P waves zinazofanana na zilizo juu lead II, moja kabla ya kila QRS.', 'PR ni thabiti; kiwango 120–200 ms.', 'Mapigo 60–100 bpm.'], steps: ['Thibitisha paper speed na calibration.', 'Linganisha RR kadhaa.', 'Kagua P na P moja kabla ya kila QRS.', 'Pima mapigo, PR na QRS.', 'Kagua axis na ST/T.'], pitfalls: ['Mapigo pekee hayathibitishi sinus.', 'Pima mipaka: Case 04 ni 60 bpm hasa.', 'Jina hili halithibitishi ECG yote au mgonjwa ni wa kawaida.'], workedExample: 'Case 01: visanduku vikubwa vinne kati ya R waves vinatoa 300 ÷ 4 = 75 bpm. RR sawa, P kabla ya kila QRS na PR 160 ms vinaunga mkono regular sinus rhythm.', recap: 'Thibitisha regularity na sinus origin, pima mapigo na intervals, kisha kamilisha ukaguzi.' },
+  'sinus-bradycardia': { name: 'Sinus bradycardia', synonyms: ['bradycardia', 'mapigo ya moyo ya polepole', 'pulse ya polepole'], explanation: 'Sinus rhythm iliyopangwa chini ya 60 bpm kwa mtu mzima katika kanuni hii; jina halielezi sababu.', objectives: ['Thibitisha sinus origin.', 'Kokotoa mapigo polepole kwa usahihi.'], features: ['RR ni sawa.', 'Sinus P kabla ya kila QRS na PR thabiti.', 'Mapigo chini ya 60 bpm.', 'Kagua vipimo vingine kimoja kimoja.'], steps: ['Thibitisha speed na calibration.', 'Kagua RR na P–QRS.', 'Pima mapigo kwa RR.', 'Pima PR na QRS.', 'Kagua axis na ST/T kisha ainisha.'], pitfalls: ['Mapigo polepole pekee hayathibitishi sinus.', 'Usichanganye visanduku vidogo na vikubwa.', 'Maana ya kitabibu inahitaji muktadha na dalili.'], workedExample: 'Case 02: visanduku vikubwa sita vinatoa 300 ÷ 6 = 50 bpm. RR sawa na P kabla ya kila QRS vinaunga mkono regular sinus bradycardia.', recap: 'Thibitisha sinus, pima mapigo, na tenga uainishaji wa ECG na maana ya kitabibu.' },
+  'sinus-tachycardia': { name: 'Sinus tachycardia', synonyms: ['tachycardia', 'mapigo ya moyo ya haraka', 'pulse ya haraka'], explanation: 'Sinus rhythm iliyopangwa zaidi ya 100 bpm kwa mtu mzima katika mafunzo haya.', objectives: ['Tambua P waves complexes zikiwa karibu.', 'Pima mapigo ya haraka bila kuhitimisha kwa mapigo pekee.'], features: ['RR ni sawa.', 'Sinus P kabla ya kila QRS na PR thabiti.', 'Mapigo zaidi ya 100 bpm.', 'P na T zinaweza kuwa karibu.'], steps: ['Thibitisha speed na calibration.', 'Linganisha RR.', 'Kagua P katika lead II.', 'Pima mapigo, PR na QRS.', 'Kagua axis na ST/T kisha ainisha.'], pitfalls: ['Mapigo ya haraka pekee hayathibitishi sinus.', 'Usichanganye T wave na P wave.', 'Jina halielezi sababu ya mapigo.'], workedExample: 'Case 03: visanduku 2.5 vinatoa 300 ÷ 2.5 = 120 bpm. RR sawa na P kabla ya kila QRS vinaunga mkono regular sinus tachycardia.', recap: 'Kagua regularity na P–QRS kabla ya kuhesabu mapigo.' },
+  rate: { name: 'Mapigo ya moyo', synonyms: ['mapigo', 'mapigo ya moyo', 'bpm', 'pulse'], explanation: 'Idadi ya cardiac cycles kwa dakika. Kwa ECG regular ya 25 mm/s, nafasi ya RR hutoa makadirio.', objectives: ['Kagua paper speed.', 'Kokotoa kwa visanduku vikubwa.'], features: ['Kwa 25 mm/s: kisanduku kidogo ni sekunde 0.04, kikubwa ni sekunde 0.20.', 'Mapigo ≈ 300 ÷ visanduku vikubwa kati ya R.', 'Linganisha RR kadhaa.'], steps: ['Soma speed.', 'Thibitisha RR ni sawa.', 'Hesabu visanduku R–R.', 'Gawanya 300.', 'Hakiki jibu.'], pitfalls: ['Njia hii inahitaji 25 mm/s na rhythm regular.', 'Hesabu R–R, si P–P au QRS.', 'Visanduku 2.5 ni 120 bpm.'], workedExample: 'Case 06: visanduku viwili vinatoa 300 ÷ 2 = 150 bpm; 60,000 ÷ 400 ms pia ni 150 bpm.', recap: 'Kagua speed na regularity, pima R–R, kokotoa na hakiki.' },
+  rhythm: { name: 'Rhythm', synonyms: ['rhythm', 'mpangilio', 'sinus mechanism', 'uhusiano wa p qrs'], explanation: 'Rhythm inaeleza muda na uhusiano wa umeme wa beats. RR kuwa sawa pekee haitoshi.', objectives: ['Tenganisha regularity na rhythm origin.', 'Tumia P–QRS kabla ya aina ya mapigo.'], features: ['Linganisha RR kadhaa.', 'Katika kesi hizi sinus P ni thabiti na juu lead II.', 'P moja kwa QRS, QRS moja kwa P, na PR thabiti.', 'Mapigo hutofautisha sinus rhythms tatu.'], steps: ['Linganisha RR.', 'Tafuta na linganisha P.', 'Kagua P–QRS na PR.', 'Pima mapigo.', 'Unganisha origin, regularity na mapigo.'], pitfalls: ['Regular haimaanishi sinus moja kwa moja.', 'P kuonekana haitoshi ikiwa haihusiani na QRS.', 'Pima kabla ya kuainisha polepole, kawaida au haraka.'], workedExample: 'Case 05: regular, P kabla ya kila QRS, PR 200 ms na mapigo 40 bpm vinatoa regular sinus bradycardia.', recap: 'Eleza regularity, P, P–QRS, PR, kisha aina ya mapigo.' },
 }
 
 export function localizeTopic(topic, language) { return language === 'fr' ? { ...topic, ...TOPIC_FR[topic.id] } : language === 'sw' ? { ...topic, ...TOPIC_SW[topic.id] } : topic }
-
+const normalize = (value) => value.trim().toLocaleLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, ' ').trim()
 export function searchTopics(query, language = 'en') {
   const normalized = normalize(query)
   if (!normalized) return []

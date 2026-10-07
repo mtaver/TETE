@@ -41,6 +41,8 @@ Topic results and the existing skill browser start Learning Mode directly, so hi
 
 Search is deterministic and local—there is no internet search or AI generation. The catalogue, explanations, and matching logic are part of the application bundle and are cached by the PWA for offline use. External source pages are still labelled as internet-required.
 
+Each of the five bundled topics now opens with a concise overview and learning objectives. Accessible expandable sections cover recognition features and measurements, a sequential interpretation method, common errors and distinctions, and a worked example tied to one of the six existing schematic cases. A recap, case-specific Learning Mode buttons, and claim-supporting references follow each lesson. English, French, and Kiswahili lesson content is bundled for offline use; French and Kiswahili translations remain provisional and have not received bilingual ECG educator review.
+
 The project does not include accounts, cloud sync, uploads, live AI, or diagnoses beyond these three sinus-rate categories.
 
 ## Written interpretation feedback
